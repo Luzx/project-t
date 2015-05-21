@@ -11,7 +11,7 @@
 
 
 			uniform sampler2D _PermTable1D, _Gradient2D;
-			uniform float _Frequency, _Lacunarity, _Gain, _xOffset, _zOffset, _scale, _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _heightVariance;
+			uniform float _Frequency, _Lacunarity, _Gain, _xOffset, _zOffset, _scale, _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _mapCoefficient, _heightVariance, _waterAnimation;
 			
 			
 			struct v2f {
@@ -93,7 +93,7 @@
 				return h;
 			}
 			
-			float ridgedmf(float2 p, int octaves, float offset, float freq) {
+			float ridgedmf(float2 p, int octaves, float offset, float freq, float lac) {
 				float sum = 0;
 				float amp = 0.5;
 				float prev = 1.0;
@@ -102,7 +102,7 @@
 					float n = ridge(inoise(p*freq), offset);
 					sum += n*amp*prev;
 					prev = n;
-					freq *= _Lacunarity;
+					freq *= lac;
 					amp *= _Gain;
 				}
 				return sum;
@@ -130,12 +130,14 @@
 				
 				
 				//ridged multi fractal
-				float n = ridgedmf(i.uv.xz, 5, 1.0, _Frequency);
+				float n = ridgedmf(i.uv.xz, 4, 1.0, _Frequency, _Lacunarity);
 				
 
 				n *= inoise(i.uv.xz * 0.5);
 				
 				n *= _heightVariance * biomeHeighVariance;
+				
+				n = n - _mapCoefficient*n*n + _mapCoefficient*n*n*n;
 				
 				_perlinShadowBias += _heightVariance;
 				
@@ -143,7 +145,7 @@
 				
 				//Assign color zones
 				//TODO: make colors accessible via unity
-				if (n < _waterThreshold) 
+				if ((n + ridgedmf(i.uv.xz * 2, 4, 1.0, _Frequency, _Lacunarity) * 0.02) < _waterThreshold) 
 				{
 					if (n < 0) n = 0;
 					return half4 (
@@ -153,28 +155,30 @@
 						1);
 				}
 
-				else if (n * _heightVariance < _sandThreshold) 
+				if (n * _heightVariance < _sandThreshold) 
 					return half4 (
 						n * _perlinShadowBias * 1, 
 						n * _perlinShadowBias * 0.7, 
 						n * _perlinShadowBias * 0.3, 
 						1);
+
 						
-				else if (n * _heightVariance < _grassThreshold) 
+				if (n * _heightVariance < _grassThreshold) 
 					return half4 (
 						n * _perlinShadowBias * 0.2, 
 						n * _perlinShadowBias * 0.7, 
 						n * _perlinShadowBias * 0.2, 
 						1);
+		
 						
-				else if (n * _heightVariance < _rockThreshold) 
+				if (n * _heightVariance < _rockThreshold) 
 					return half4 (
 						n * _perlinShadowBias * 0.5, 
 						n * _perlinShadowBias * 0.5, 
 						n * _perlinShadowBias * 0.2, 
 						1);
 
-				else return half4 (
+				return half4 (
 						n * _perlinShadowBias * 0.6, 
 						n * _perlinShadowBias * 0.6, 
 						n * _perlinShadowBias * 0.7, 

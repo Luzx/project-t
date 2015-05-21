@@ -6,8 +6,8 @@ public class TerrainGenerator : MonoBehaviour {
 	ImprovedPerlinNoise m_perlin;
 
 	public int m_seed = 0;
-	public float m_frequency = 1.0f;
-	public float m_lacunarity = 2.0f;
+	public float m_frequency = 3.0f;
+	public float m_lacunarity = 2.5f;
 	public float m_gain = 0.5f;
 	public float m_xOffset = 0f;
 	public float m_zOffset = 0f;
@@ -29,6 +29,10 @@ public class TerrainGenerator : MonoBehaviour {
 	public float heightVariance = 1.0f;
 	
 	public float perlinShadowBias;
+
+	public float mapCoefficient;
+
+	public float waterAnimation = 0;
 
 
 	private Renderer renderer;
@@ -75,6 +79,11 @@ public class TerrainGenerator : MonoBehaviour {
 			scale += moveSpeed / 20;
 		if (Input.GetKey ("g"))
 			scale -= moveSpeed / 20;
+
+		if (Input.GetKey ("r"))
+			mapCoefficient += moveSpeed;
+		if (Input.GetKey ("f"))
+			mapCoefficient -= moveSpeed;
 	}
 
 	void SetShaderArguments ()
@@ -93,6 +102,10 @@ public class TerrainGenerator : MonoBehaviour {
 		renderer.material.SetFloat ("_heightVariance", heightVariance);
 		renderer.material.SetFloat ("_perlinShadowBias", perlinShadowBias);
 		renderer.material.SetFloat ("_perlinShadowBias", perlinShadowBias);
+		renderer.material.SetFloat ("_mapCoefficient", mapCoefficient);
+
+		waterAnimation += 0.02f;
+		renderer.material.SetFloat ("_waterAnimation", waterAnimation);
 	}
 
 	void Update()

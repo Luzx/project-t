@@ -170,8 +170,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_seed: 0
-  m_frequency: 1
-  m_lacunarity: 2
+  m_frequency: 1.5
+  m_lacunarity: 2.5
   m_gain: .5
   m_xOffset: 0
   m_zOffset: -14
@@ -188,6 +188,8 @@ MonoBehaviour:
   elevation: 3.3499999
   heightVariance: 1
   perlinShadowBias: 2
+  mapCoefficient: 0
+  waterAnimation: 0
 --- !u!33 &537509196
 MeshFilter:
   m_ObjectHideFlags: 0
