@@ -34,6 +34,11 @@ public class TerrainGenerator : MonoBehaviour {
 
 	public float waterAnimation = 0;
 
+	private float previousX = 0;
+	private float previousY = 0;
+	private float x = 0f;
+	private float y = 0f;
+
 
 	private Renderer renderer;
 
@@ -51,14 +56,17 @@ public class TerrainGenerator : MonoBehaviour {
 
 	void HandleInput ()
 	{
+
 		if (Input.GetKey ("w"))
-			m_zOffset += moveSpeed;
+			y -= moveSpeed;
 		if (Input.GetKey ("a"))
-			m_xOffset -= moveSpeed;
+			x += moveSpeed;
 		if (Input.GetKey ("s"))
-			m_zOffset -= moveSpeed;
+			y += moveSpeed;
 		if (Input.GetKey ("d"))
-			m_xOffset += moveSpeed;
+			x -= moveSpeed;
+
+
 		if (Input.GetKey ("o"))
 			m_frequency += moveSpeed / 20;
 		if (Input.GetKey ("l"))
@@ -91,8 +99,8 @@ public class TerrainGenerator : MonoBehaviour {
 		renderer.material.SetFloat ("_Frequency", m_frequency);
 		renderer.material.SetFloat ("_Lacunarity", m_lacunarity);
 		renderer.material.SetFloat ("_Gain", m_gain);
-		renderer.material.SetFloat ("_xOffset", m_xOffset);
-		renderer.material.SetFloat ("_zOffset", m_zOffset);
+		renderer.material.SetFloat ("_x", x);
+		renderer.material.SetFloat ("_y", y);
 		renderer.material.SetFloat ("_scale", scale);
 		renderer.material.SetFloat ("_waterThreshold", waterThreshold);
 		renderer.material.SetFloat ("_sandThreshold", sandThreshold);
@@ -110,6 +118,9 @@ public class TerrainGenerator : MonoBehaviour {
 
 	void Update()
 	{
+		previousX = x;
+		previousY = y;
+
 		HandleInput ();
 
 		SetShaderArguments ();

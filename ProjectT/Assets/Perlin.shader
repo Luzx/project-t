@@ -11,7 +11,7 @@
 
 
 			uniform sampler2D _PermTable1D, _Gradient2D;
-			uniform float _Frequency, _Lacunarity, _Gain, _xOffset, _zOffset, _scale, _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _mapCoefficient, _heightVariance, _waterAnimation;
+			uniform float _Frequency, _Lacunarity, _Gain, _x, _y, _xStart, _xEnd, _yStart, _yEnd, _scale, _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _mapCoefficient, _heightVariance, _waterAnimation;
 			
 			
 			struct v2f {
@@ -109,11 +109,10 @@
 			}
 
 			fixed4 frag (v2f i) : SV_Target {
-				i.uv.xz.x *= _scale;
-				i.uv.xz.y *= _scale;
 				
-				i.uv.xz.x += _xOffset;
-				i.uv.xz.y += _zOffset;
+				i.uv.xz *= _scale;
+				
+				i.uv.xz += float2(_x, _y);
 			
 				//Biomes
 				//Constant factor is biome scale, float2 is seed relative to master seed.
@@ -145,7 +144,7 @@
 				
 				//Assign color zones
 				//TODO: make colors accessible via unity
-				if ((n + ridgedmf(i.uv.xz * 2, 4, 1.0, _Frequency, _Lacunarity) * 0.02) < _waterThreshold) 
+				if (n < _waterThreshold) 
 				{
 					if (n < 0) n = 0;
 					return half4 (
@@ -173,9 +172,9 @@
 						
 				if (n * _heightVariance < _rockThreshold) 
 					return half4 (
-						n * _perlinShadowBias * 0.5, 
-						n * _perlinShadowBias * 0.5, 
-						n * _perlinShadowBias * 0.2, 
+						n * _perlinShadowBias * 0.4, 
+						n * _perlinShadowBias * 0.4, 
+						n * _perlinShadowBias * 0.3, 
 						1);
 
 				return half4 (
