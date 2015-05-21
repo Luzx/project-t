@@ -173,6 +173,21 @@ MonoBehaviour:
   m_frequency: 1
   m_lacunarity: 2
   m_gain: .5
+  m_xOffset: 0
+  m_zOffset: -14
+  scale: 1
+  moveSpeed: .100000001
+  waterColor: {r: 1, g: .125919119, b: .125919119, a: 0}
+  sandColor: {r: 0, g: 0, b: 0, a: 0}
+  grassColor: {r: 0, g: 0, b: 0, a: 0}
+  rockColor: {r: 0, g: 0, b: 0, a: 0}
+  waterThreshold: .25
+  sandThreshold: .270000011
+  grassThreshold: .449999988
+  rockThreshold: .699999988
+  elevation: 3.3499999
+  heightVariance: 1
+  perlinShadowBias: 2
 --- !u!33 &537509196
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -11,7 +11,8 @@
 
 
 			uniform sampler2D _PermTable1D, _Gradient2D;
-			uniform float _Frequency, _Lacunarity, _Gain;
+			uniform float _Frequency, _Lacunarity, _Gain, _xOffset, _zOffset, _scale, _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _heightVariance;
+			
 			
 			struct v2f {
 				float4 pos : SV_POSITION;
@@ -92,9 +93,9 @@
 				return h;
 			}
 			
-			float ridgedmf(float2 p, int octaves, float offset) {
+			float ridgedmf(float2 p, int octaves, float offset, float freq) {
 				float sum = 0;
-				float freq = _Frequency, amp = 0.5;
+				float amp = 0.5;
 				float prev = 1.0;
 				for(int i = 0; i < octaves; i++) 
 				{
@@ -108,7 +109,16 @@
 			}
 
 			fixed4 frag (v2f i) : SV_Target {
-				//float n = inoise(i.uv.xz);
+				i.uv.xz.x *= _scale;
+				i.uv.xz.y *= _scale;
+				
+				i.uv.xz.x += _xOffset;
+				i.uv.xz.y += _zOffset;
+			
+				//Biomes
+				//Constant factor is biome scale, float2 is seed relative to master seed.
+				float biomeHeighVariance = inoise(i.uv.xz * 0.03 + float2(1000, 1000));
+				float biomeElevation = inoise(i.uv.xz * 0.03 + float2(-1000, -1000));
 				
 
 				//fractal noise
@@ -118,12 +128,59 @@
 				//turbulent noise
 				//float n = turbulence(i.uv.xz, 4);
 				
+				
 				//ridged multi fractal
-				float n = ridgedmf(i.uv.xz, 4, 1.0);
+				float n = ridgedmf(i.uv.xz, 5, 1.0, _Frequency);
+				
 
 				n *= inoise(i.uv.xz * 0.5);
+				
+				n *= _heightVariance * biomeHeighVariance;
+				
+				_perlinShadowBias += _heightVariance;
+				
+				n = n + _elevation * biomeElevation;
+				
+				//Assign color zones
+				//TODO: make colors accessible via unity
+				if (n < _waterThreshold) 
+				{
+					if (n < 0) n = 0;
+					return half4 (
+						((n) + 0.7) * _perlinShadowBias * 0.2, 
+						((n) + 0.7) * _perlinShadowBias * 0.3, 
+						((n) + 0.7) * _perlinShadowBias * 0.8, 
+						1);
+				}
 
-				return half4 (n, n, n, 1);
+				else if (n * _heightVariance < _sandThreshold) 
+					return half4 (
+						n * _perlinShadowBias * 1, 
+						n * _perlinShadowBias * 0.7, 
+						n * _perlinShadowBias * 0.3, 
+						1);
+						
+				else if (n * _heightVariance < _grassThreshold) 
+					return half4 (
+						n * _perlinShadowBias * 0.2, 
+						n * _perlinShadowBias * 0.7, 
+						n * _perlinShadowBias * 0.2, 
+						1);
+						
+				else if (n * _heightVariance < _rockThreshold) 
+					return half4 (
+						n * _perlinShadowBias * 0.5, 
+						n * _perlinShadowBias * 0.5, 
+						n * _perlinShadowBias * 0.2, 
+						1);
+
+				else return half4 (
+						n * _perlinShadowBias * 0.6, 
+						n * _perlinShadowBias * 0.6, 
+						n * _perlinShadowBias * 0.7, 
+						1);
+
+				//return half4 (n, n, n, 1);
 			}
 
 			ENDCG
