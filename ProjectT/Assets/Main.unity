@@ -116,11 +116,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d92525159a45c4e51b4101c5ae52f3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pixWidth: 1000
-  pixHeight: 1000
+  pixWidth: 1024
+  pixHeight: 1024
   xOrg: 0
-  yOrg: 0
-  scale: 4
+  yOrg: 600
+  scale: 10
+  waterColor: {r: .0802335516, g: .403301835, b: .779411793, a: 0}
+  sandColor: {r: 1, g: .776064932, b: .29411763, a: 0}
+  grassColor: {r: .135264367, g: .580882311, b: .0512543358, a: 0}
+  rockColor: {r: .5, g: .486238092, b: .367647052, a: 0}
+  waterThreshold: .25
+  sandThreshold: .270000011
+  grassThreshold: .449999988
+  rockThreshold: 1
+  perlinShadowBias: 2
+  elevation: .600000024
+  heightVariance: 1
+  moveSpeed: 1
 --- !u!23 &537509194
 MeshRenderer:
   m_ObjectHideFlags: 0
