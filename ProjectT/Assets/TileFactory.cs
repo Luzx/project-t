@@ -39,8 +39,8 @@ public class TileFactory : MonoBehaviour {
 		var texRenderer = plane.GetComponent<Renderer> ();
 
 		var terrainGen = tileFactory.GetComponent<TerrainGenerator> ();
-		terrainGen.x = - x * 10;
-		terrainGen.y = - y * 10;
+		terrainGen.x = - x * 10 * terrainGen.scale;
+		terrainGen.y = - y * 10 * terrainGen.scale;
 
 		var renderTexture = new RenderTexture (1024, 1024, 24);
 

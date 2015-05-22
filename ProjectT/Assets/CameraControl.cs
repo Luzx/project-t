@@ -25,6 +25,9 @@ public class CameraControl : MonoBehaviour {
 			movement += Vector3.down;
 		}
 
+		movement.x += Input.acceleration.x;
+		movement.y += Input.acceleration.y;
+
 		transform.position = transform.position + movement * Time.deltaTime * 30f;
 	}
 }
