@@ -9,17 +9,18 @@ public class TileFactory : MonoBehaviour {
 	public GameObject tileFactory;
 	public Camera tileCamera;
 	public Camera mainCamera;
-	private int curX = 0;
-	private int curY = 0;
+
+	public int preloadingLevel = 2;
+	public float keepDistance = 5;
 
 	RenderTexture nirvanaTexture;
 
-	private List<Vector2> createdTiles;
+	private Dictionary<Vector2, Tile> createdTiles;
 
 	// Use this for initialization
 	void Start () {
 
-		createdTiles = new List<Vector2> ();
+		createdTiles = new Dictionary<Vector2, Tile> ();
 
 		nirvanaTexture = new RenderTexture (1, 1, 24);
 
@@ -47,7 +48,7 @@ public class TileFactory : MonoBehaviour {
 		texRenderer.material.mainTexture = renderTexture;
 		tileCamera.targetTexture = renderTexture;
 
-		createdTiles.Add (new Vector2 (x, y));
+		createdTiles.Add (new Vector2 (x, y), new TileFactory.Tile(plane, renderTexture));
 
 		tileCamera.enabled = true;
 	}
@@ -57,16 +58,78 @@ public class TileFactory : MonoBehaviour {
 
 	}
 
+	private bool checkTile(Vector2 pos, int level = 0) {
+		if (level > preloadingLevel) {
+			return false;
+		}
+
+		level++;
+
+		if (!tileCreated (pos)) {
+			buildTile ((int)pos.x, (int)pos.y);
+			return true;
+		}
+			
+		if (checkTile (pos + Vector2.up, level))
+			return true;
+
+		if (checkTile (pos - Vector2.up, level))
+			return true;
+
+		if (checkTile (pos + Vector2.right, level))
+			return true;
+
+		if (checkTile (pos - Vector2.right, level))
+			return true;
+
+		if (checkTile (pos + Vector2.up + Vector2.right, level))
+			return true;
+
+		if (checkTile (pos - Vector2.up + Vector2.right, level))
+			return true;
+
+		if (checkTile (pos + Vector2.up - Vector2.right, level))
+			return true;
+
+		if (checkTile (pos - Vector2.up - Vector2.right, level))
+			return true;
+
+		return false;
+
+	}
+		
+	private bool tileCreated(Vector2 pos) {
+		return createdTiles.ContainsKey (pos);
+	}
+
 	void OnPostRender() {
-		tileCamera.enabled = false;	
 		tileCamera.targetTexture = nirvanaTexture;
-		tileCamera.enabled = true;
 
+		Vector2 curPos = new Vector2((int)(mainCamera.transform.position.x / 10), (int)(mainCamera.transform.position.y / 10));
 
-		Vector2 curTile = new Vector2((int)(mainCamera.transform.position.x / 10), (int)(mainCamera.transform.position.y / 10));
-		if (!createdTiles.Contains (curTile)) {
-			buildTile ((int)curTile.x, (int)curTile.y);
-		} 
+		checkTile (curPos);
+
+		List<Vector2> keys = new List<Vector2> (createdTiles.Keys);
+
+		foreach (var key in keys) {
+			var value = createdTiles[key];
+
+			if ((key - curPos).magnitude > keepDistance) {
+				Destroy (value.renderTexture, 0.1f);
+				Destroy (value.plane, 0.2f);
+				createdTiles.Remove (key);
+			}
+		}
+	}
+
+	public class Tile {
+		public GameObject plane;
+		public RenderTexture renderTexture;
+
+		public Tile(GameObject plane, RenderTexture renderTexture) {
+			this.plane = plane;
+			this.renderTexture = renderTexture;
+		}
 	}
 
 }
