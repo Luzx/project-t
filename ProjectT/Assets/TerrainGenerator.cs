@@ -9,8 +9,8 @@ public class TerrainGenerator : MonoBehaviour {
 	public float m_frequency = 3.0f;
 	public float m_lacunarity = 2.5f;
 	public float m_gain = 0.5f;
-	public float m_xOffset = 0f;
-	public float m_zOffset = 0f;
+	//public float m_xOffset = 0f;
+	//public float m_zOffset = 0f;
 	public float scale;
 	public float moveSpeed;
 
@@ -36,8 +36,8 @@ public class TerrainGenerator : MonoBehaviour {
 
 	private float previousX = 0;
 	private float previousY = 0;
-	private float x = 0f;
-	private float y = 0f;
+	public float x = 0f;
+	public float y = 0f;
 
 
 	private Renderer renderer;
@@ -57,7 +57,7 @@ public class TerrainGenerator : MonoBehaviour {
 	void HandleInput ()
 	{
 
-		if (Input.GetKey ("w"))
+		/*if (Input.GetKey ("w"))
 			y -= moveSpeed;
 		if (Input.GetKey ("a"))
 			x += moveSpeed;
@@ -65,7 +65,7 @@ public class TerrainGenerator : MonoBehaviour {
 			y += moveSpeed;
 		if (Input.GetKey ("d"))
 			x -= moveSpeed;
-
+*/
 
 		if (Input.GetKey ("o"))
 			m_frequency += moveSpeed / 20;
