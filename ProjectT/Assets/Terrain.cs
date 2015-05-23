@@ -9,6 +9,7 @@ public class Terrain : MonoBehaviour {
 	public Color sandColor;
 	public Color grassColor;
 	public Color rockColor;
+	public Color iceColor;
 	
 	public float waterThreshold;
 	public float sandThreshold;
@@ -62,6 +63,11 @@ public class Terrain : MonoBehaviour {
 		renderer.material.SetFloat ("_perlinShadowBias", perlinShadowBias);
 		renderer.material.SetFloat ("_perlinShadowBias", perlinShadowBias);
 		renderer.material.SetFloat ("_mapCoefficient", mapCoefficient);
+		renderer.material.SetColor ("_waterColor", waterColor);
+		renderer.material.SetColor ("_sandColor", sandColor);
+		renderer.material.SetColor ("_grassColor", grassColor);
+		renderer.material.SetColor ("_rockColor", rockColor);
+		renderer.material.SetColor ("_iceColor", iceColor);
 
 	}
 	

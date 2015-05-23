@@ -18,7 +18,8 @@
 
 		sampler2D _MainTex;
 		uniform float _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _mapCoefficient, _heightVariance, _waterAnimation;
-
+		uniform fixed3 _waterColor, _sandColor, _grassColor, _rockColor, _iceColor;
+		
 		struct Input {
 			float2 uv_MainTex;
 		};
@@ -53,21 +54,22 @@
 			if (n < _waterThreshold) 
 			{
 				if (n < 0) n = 0;
-				o.Albedo = fixed3 (((n) + 0.7) * _perlinShadowBias * 0.2, ((n) + 0.7) * _perlinShadowBias * 0.3, ((n) + 0.7) * _perlinShadowBias * 0.8);
+				o.Albedo = (n + 0.7) * _perlinShadowBias * _waterColor;//fixed3 (((n) + 0.7) * _perlinShadowBias * 0.2, ((n) + 0.7) * _perlinShadowBias * 0.3, ((n) + 0.7) * _perlinShadowBias * 0.8);
 			}
 
 			else if (n * _heightVariance < _sandThreshold) 
-				o.Albedo = fixed3 (n * _perlinShadowBias * 1, n * _perlinShadowBias * 0.7, n * _perlinShadowBias * 0.3);
+				o.Albedo = n * _perlinShadowBias * _sandColor;//fixed3 (n * _perlinShadowBias * 1, n * _perlinShadowBias * 0.7, n * _perlinShadowBias * 0.3);
 
 					
 			else if (n * _heightVariance < _grassThreshold) 
-				o.Albedo = fixed3 (n * _perlinShadowBias * 0.2, n * _perlinShadowBias * 0.7, n * _perlinShadowBias * 0.2);
+				o.Albedo = n * _perlinShadowBias * _grassColor;//fixed3 (n * _perlinShadowBias * 0.2, n * _perlinShadowBias * 0.7, n * _perlinShadowBias * 0.2);
 	
 					
 			else if (n * _heightVariance < _rockThreshold) 
-				o.Albedo = fixed3 (n * _perlinShadowBias * 0.4, n * _perlinShadowBias * 0.4, n * _perlinShadowBias * 0.3);
+				o.Albedo = n * _perlinShadowBias * _rockColor;//fixed3 (n * _perlinShadowBias * 0.4, n * _perlinShadowBias * 0.4, n * _perlinShadowBias * 0.3);
 
-			else o.Albedo = fixed3 (n * _perlinShadowBias * 0.6, n * _perlinShadowBias * 0.6, n * _perlinShadowBias * 0.7);
+
+			else o.Albedo = n * _perlinShadowBias * _iceColor;//fixed3 (n * _perlinShadowBias * 0.6, n * _perlinShadowBias * 0.6, n * _perlinShadowBias * 0.7);
 
 			
 			//Other parameters
