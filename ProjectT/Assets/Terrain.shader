@@ -4,6 +4,9 @@
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
 		_Metallic ("Metallic", Range(0,1)) = 0.0
+		_ParallaxMap ("Heightmap (A)", 2D) = "black" {}
+		_Parallax ("Height", Range (0.005, 0.2)) = 0.02
+		_BumpMap ("Normalmap", 2D) = "bump" {}
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -17,11 +20,17 @@
 		#pragma target 3.0
 
 		sampler2D _MainTex;
+		sampler2D _ParallaxMap;
+		sampler2D _BumpMap;
 		uniform float _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _mapCoefficient, _heightVariance, _waterAnimation;
 		uniform fixed3 _waterColor, _sandColor, _grassColor, _rockColor, _iceColor;
-		
+
+		float _Parallax;
+
 		struct Input {
 			float2 uv_MainTex;
+			float2 uv_BumpMap;
+			float3 viewDir;
 		};
 
 		half _Glossiness;
@@ -29,6 +38,12 @@
 		fixed4 _Color;
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
+
+			half h = tex2D (_ParallaxMap, IN.uv_BumpMap).w;
+			float2 offset = ParallaxOffset (h, _Parallax, IN.viewDir);
+			IN.uv_MainTex += offset;
+			IN.uv_BumpMap += offset;
+
 			//Capture heightmap pixel
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
 			
@@ -76,10 +91,11 @@
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
 			o.Alpha = 1;//c.a;
-			
-			
+			o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
+					
 		}
 		ENDCG
+
 	} 
 	FallBack "Diffuse"
 }
