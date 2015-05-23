@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Terrain : MonoBehaviour {
+public class TerrainColor : MonoBehaviour {
 	
 	public float moveSpeed;
 	

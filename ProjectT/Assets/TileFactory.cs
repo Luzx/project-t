@@ -3,133 +3,134 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class TileFactory : MonoBehaviour {
-
-
+	
+	
 	public GameObject tileFactory;
 	public Camera tileCamera;
 	public Camera mainCamera;
-
+	
 	public bool invalidate = false;
-
+	
 	public int preloadingLevel = 2;
 	public float keepDistance = 5;
-
+	
 	RenderTexture nirvanaTexture;
-
+	
 	private Dictionary<Vector2, Tile> createdTiles;
-
+	
 	// Use this for initialization
 	void Start () {
-
+		
 		createdTiles = new Dictionary<Vector2, Tile> ();
-
+		
 		nirvanaTexture = new RenderTexture (1, 1, 24);
-
+		
 		buildTile (0, 0);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (Input.GetKeyDown (KeyCode.LeftControl))
+			invalidate = true;
 	}
-
+	
 	private void buildTile(int x, int y) {
 		
 		var plane = (GameObject)Instantiate(Resources.Load("Tile"));
-
+		
 		plane.transform.position = new Vector3 (x * 10, y * 10);
 		var texRenderer = plane.GetComponent<Renderer> ();
-
+		
 		var terrainGen = tileFactory.GetComponent<TerrainGenerator> ();
 		terrainGen.x = - x * 10 * terrainGen.scale;
 		terrainGen.y = - y * 10 * terrainGen.scale;
-
+		
 		var renderTexture = new RenderTexture (1024, 1024, 24);
-
+		
 		texRenderer.material.mainTexture = renderTexture;
 		tileCamera.targetTexture = renderTexture;
-
+		
 		createdTiles.Add (new Vector2 (x, y), new TileFactory.Tile(plane, renderTexture));
-
+		
 		tileCamera.enabled = true;
 	}
-
+	
 	void OnPreRender() {
-
-
+		
+		
 	}
-
+	
 	private bool checkTile(Vector2 pos, int level = 0) {
 		if (level > preloadingLevel) {
 			return false;
 		}
-
+		
 		level++;
-
+		
 		if (!tileCreated (pos)) {
 			buildTile ((int)pos.x, (int)pos.y);
 			return true;
 		}
-			
+		
 		if (checkTile (pos + Vector2.up, level))
 			return true;
-
+		
 		if (checkTile (pos - Vector2.up, level))
 			return true;
-
+		
 		if (checkTile (pos + Vector2.right, level))
 			return true;
-
+		
 		if (checkTile (pos - Vector2.right, level))
 			return true;
-
+		
 		if (checkTile (pos + Vector2.up + Vector2.right, level))
 			return true;
-
+		
 		if (checkTile (pos - Vector2.up + Vector2.right, level))
 			return true;
-
+		
 		if (checkTile (pos + Vector2.up - Vector2.right, level))
 			return true;
-
+		
 		if (checkTile (pos - Vector2.up - Vector2.right, level))
 			return true;
-
-		return false;
-
-	}
 		
+		return false;
+		
+	}
+	
 	private bool tileCreated(Vector2 pos) {
 		return createdTiles.ContainsKey (pos);
 	}
-
+	
 	void OnPostRender() {
 		tileCamera.targetTexture = nirvanaTexture;
-
+		
 		Vector2 curPos = new Vector2((int)(mainCamera.transform.position.x / 10), (int)(mainCamera.transform.position.y / 10));
-
+		
 		if (invalidate) {
-
+			
 			List<Vector2> keys2 = new List<Vector2> (createdTiles.Keys);
-
+			
 			foreach (var key in keys2) {
 				var value = createdTiles [key];
-
+				
 				Destroy (value.renderTexture, 0.0f);
 				Destroy (value.plane, 0.0f);
 				createdTiles.Remove (key);
 			}
-
+			
 			invalidate = false;
 		}
-
+		
 		checkTile (curPos);
-
+		
 		List<Vector2> keys = new List<Vector2> (createdTiles.Keys);
-
+		
 		foreach (var key in keys) {
 			var value = createdTiles[key];
-
+			
 			if ((key - curPos).magnitude > keepDistance) {
 				Destroy (value.renderTexture, 0.1f);
 				Destroy (value.plane, 0.2f);
@@ -137,19 +138,19 @@ public class TileFactory : MonoBehaviour {
 			}
 		}
 	}
-
+	
 	public void invalidateTiles() {
 		invalidate = true;
 	}
-
+	
 	public class Tile {
 		public GameObject plane;
 		public RenderTexture renderTexture;
-
+		
 		public Tile(GameObject plane, RenderTexture renderTexture) {
 			this.plane = plane;
 			this.renderTexture = renderTexture;
 		}
 	}
-
+	
 }

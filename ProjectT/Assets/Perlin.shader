@@ -116,8 +116,8 @@
 			
 				//Biomes
 				//Constant factor is biome scale, float2 is seed relative to master seed.
-				float biomeHeighVariance = inoise(i.uv.xz * 0.03 + float2(1000, 1000));
-				float biomeElevation = inoise(i.uv.xz * 0.03 + float2(-1000, -1000));
+				float biomeHeighVariance = ridgedmf(i.uv.xz * 0.01 + float2(1000, 1000), 4, 1.0, _Frequency, _Lacunarity) * ridgedmf(i.uv.xz * 0.1 + float2(10000, 10000), 4, 1.0, _Frequency, _Lacunarity) + ridgedmf(i.uv.xz * 0.1 + float2(2000, 1000), 4, 1.0, _Frequency, _Lacunarity) * 0.1;//inoise(i.uv.xz * 0.03 + float2(1000, 1000));
+				float biomeElevation = ridgedmf(i.uv.xz * 0.01 + float2(-1000, -1000), 4, 1.0, _Frequency, _Lacunarity) * ridgedmf(i.uv.xz * 0.005 + float2(-1000, -1000), 4, 1.0, _Frequency, _Lacunarity) + ridgedmf(i.uv.xz * 0.1 + float2(1000, 10000), 4, 1.0, _Frequency, _Lacunarity) * 0.1;//inoise(i.uv.xz * 0.03 + float2(-1000, -1000));
 				
 
 				//fractal noise
@@ -129,13 +129,13 @@
 				
 				
 				//ridged multi fractal
-				float n = ridgedmf(i.uv.xz, 4, 1.0, _Frequency, _Lacunarity);
+				float height = ridgedmf(i.uv.xz, 4, 1.0, _Frequency, _Lacunarity);
 				
 
-				n *= inoise(i.uv.xz * 0.5);
+				height *= inoise(i.uv.xz * 0.5);
 				
 				
-				return half4 (n, n, n, 1);
+				return half4 (height, biomeHeighVariance, biomeElevation, 1);
 			}
 
 			ENDCG

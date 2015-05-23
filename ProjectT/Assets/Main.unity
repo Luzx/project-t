@@ -169,22 +169,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 485910288}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac2ac0b1b552587439b3cd3845a7de99, type: 3}
+  m_Script: {fileID: 11500000, guid: 74e2ccd9b8aaabf4fa389e5bbae36377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: .100000001
-  waterColor: {r: .201448962, g: .383568496, b: .595588207, a: 0}
-  sandColor: {r: .860294104, g: .77129817, b: .480752587, a: 0}
-  grassColor: {r: .548556268, g: .647058845, b: .271193773, a: 0}
-  rockColor: {r: .566176474, g: .566176474, b: .566176474, a: 0}
-  iceColor: {r: .838235259, g: .919675469, b: 1, a: 0}
+  waterColor: {r: .272058845, g: .969878197, b: 1, a: 0}
+  sandColor: {r: 1, g: .8482759, b: 0, a: 0}
+  grassColor: {r: .20588237, g: 1, b: .244219154, a: 0}
+  rockColor: {r: .345588207, g: .345588207, b: .345588207, a: 0}
+  iceColor: {r: .904411793, g: .904411793, b: .904411793, a: 0}
   waterThreshold: .25
   sandThreshold: .270000011
   grassThreshold: .699999988
   rockThreshold: .899999976
-  elevation: 0
+  elevation: 1
   heightVariance: 1
-  perlinShadowBias: 2
+  perlinShadowBias: 0
   mapCoefficient: 0
 --- !u!1 &537509192
 GameObject:
@@ -247,19 +247,6 @@ MonoBehaviour:
   m_gain: .5
   scale: 1
   moveSpeed: .100000001
-  waterColor: {r: 1, g: .125919119, b: .125919119, a: 0}
-  sandColor: {r: 0, g: 0, b: 0, a: 0}
-  grassColor: {r: 0, g: 0, b: 0, a: 0}
-  rockColor: {r: 0, g: 0, b: 0, a: 0}
-  waterThreshold: .25
-  sandThreshold: .270000011
-  grassThreshold: .449999988
-  rockThreshold: .99000001
-  elevation: 3.3499999
-  heightVariance: 1
-  perlinShadowBias: 2
-  mapCoefficient: 0
-  waterAnimation: 0
   x: 0
   y: 0
 --- !u!33 &537509196
