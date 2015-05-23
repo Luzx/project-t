@@ -173,10 +173,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: .100000001
-  waterColor: {r: 0, g: 0, b: 0, a: 0}
-  sandColor: {r: 0, g: 0, b: 0, a: 0}
-  grassColor: {r: 0, g: 0, b: 0, a: 0}
-  rockColor: {r: 0, g: 0, b: 0, a: 0}
+  waterColor: {r: .201448962, g: .383568496, b: .595588207, a: 0}
+  sandColor: {r: .860294104, g: .77129817, b: .480752587, a: 0}
+  grassColor: {r: .548556268, g: .647058845, b: .271193773, a: 0}
+  rockColor: {r: .566176474, g: .566176474, b: .566176474, a: 0}
+  iceColor: {r: .838235259, g: .919675469, b: 1, a: 0}
   waterThreshold: .25
   sandThreshold: .270000011
   grassThreshold: .699999988
@@ -536,6 +537,7 @@ MonoBehaviour:
   tileFactory: {fileID: 537509192}
   tileCamera: {fileID: 1253436744}
   mainCamera: {fileID: 651954254}
+  invalidate: 0
   preloadingLevel: 2
   keepDistance: 5
 --- !u!1 &2025940363
