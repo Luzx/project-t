@@ -9,6 +9,8 @@ public class TileFactory : MonoBehaviour {
 	public Camera tileCamera;
 	public Camera mainCamera;
 
+	public bool invalidate = false;
+
 	public int preloadingLevel = 2;
 	public float keepDistance = 5;
 
@@ -28,7 +30,7 @@ public class TileFactory : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
 	}
 
 	private void buildTile(int x, int y) {
@@ -106,6 +108,21 @@ public class TileFactory : MonoBehaviour {
 
 		Vector2 curPos = new Vector2((int)(mainCamera.transform.position.x / 10), (int)(mainCamera.transform.position.y / 10));
 
+		if (invalidate) {
+
+			List<Vector2> keys2 = new List<Vector2> (createdTiles.Keys);
+
+			foreach (var key in keys2) {
+				var value = createdTiles [key];
+
+				Destroy (value.renderTexture, 0.0f);
+				Destroy (value.plane, 0.0f);
+				createdTiles.Remove (key);
+			}
+
+			invalidate = false;
+		}
+
 		checkTile (curPos);
 
 		List<Vector2> keys = new List<Vector2> (createdTiles.Keys);
@@ -119,6 +136,10 @@ public class TileFactory : MonoBehaviour {
 				createdTiles.Remove (key);
 			}
 		}
+	}
+
+	public void invalidateTiles() {
+		invalidate = true;
 	}
 
 	public class Tile {
