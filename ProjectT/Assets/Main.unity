@@ -182,7 +182,7 @@ MonoBehaviour:
   sandThreshold: .270000011
   grassThreshold: .699999988
   rockThreshold: .899999976
-  elevation: 1
+  elevation: 0
   heightVariance: 1
   perlinShadowBias: 0
   mapCoefficient: 0
@@ -295,7 +295,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 651954250}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!124 &651954252
 Behaviour:
   m_ObjectHideFlags: 0

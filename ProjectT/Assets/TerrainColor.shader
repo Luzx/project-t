@@ -4,7 +4,6 @@
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
 		_Metallic ("Metallic", Range(0,1)) = 0.0
-		_ParallaxMap ("Heightmap (A)", 2D) = "black" {}
 		_Parallax ("Height", Range (0.005, 0.2)) = 0.02
 		_BumpMap ("Normalmap", 2D) = "bump" {}
 	}
@@ -21,7 +20,6 @@
 		#pragma target 3.0
 
 		sampler2D _MainTex;
-		sampler2D _ParallaxMap;
 		sampler2D _BumpMap;
 		uniform float _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _mapCoefficient, _heightVariance, _waterAnimation;
 		uniform fixed3 _waterColor, _sandColor, _grassColor, _rockColor, _iceColor;
@@ -40,7 +38,8 @@
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 
-			half h = tex2D (_ParallaxMap, IN.uv_BumpMap).w;
+			half h = tex2D (_MainTex, IN.uv_MainTex).r;
+
 			float2 offset = ParallaxOffset (h, _Parallax, IN.viewDir);
 			IN.uv_MainTex += offset;
 			IN.uv_BumpMap += offset;
