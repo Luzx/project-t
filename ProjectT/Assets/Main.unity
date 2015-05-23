@@ -157,7 +157,7 @@ Transform:
   m_GameObject: {fileID: 485910288}
   m_LocalRotation: {x: .70710659, y: 0, z: 0, w: -.707106948}
   m_LocalPosition: {x: -10000, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: -1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -169,21 +169,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 485910288}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac2ac0b1b552587439b3cd3845a7de99, type: 3}
+  m_Script: {fileID: 11500000, guid: 74e2ccd9b8aaabf4fa389e5bbae36377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: .100000001
-  waterColor: {r: 0, g: 0, b: 0, a: 0}
-  sandColor: {r: 0, g: 0, b: 0, a: 0}
-  grassColor: {r: 0, g: 0, b: 0, a: 0}
-  rockColor: {r: 0, g: 0, b: 0, a: 0}
+  waterColor: {r: .544117689, g: .981135845, b: 1, a: 0}
+  sandColor: {r: .951318324, g: 1, b: .117647052, a: 0}
+  grassColor: {r: .433823526, g: 1, b: .461156219, a: 0}
+  rockColor: {r: .463235319, g: .463235319, b: .463235319, a: 0}
+  iceColor: {r: .91911763, g: .91911763, b: .91911763, a: 0}
   waterThreshold: .25
   sandThreshold: .270000011
   grassThreshold: .699999988
   rockThreshold: .899999976
   elevation: 0
   heightVariance: 1
-  perlinShadowBias: 2
+  perlinShadowBias: 6
   mapCoefficient: 0
 --- !u!1 &537509192
 GameObject:
@@ -246,19 +247,6 @@ MonoBehaviour:
   m_gain: .5
   scale: 1
   moveSpeed: .100000001
-  waterColor: {r: 1, g: .125919119, b: .125919119, a: 0}
-  sandColor: {r: 0, g: 0, b: 0, a: 0}
-  grassColor: {r: 0, g: 0, b: 0, a: 0}
-  rockColor: {r: 0, g: 0, b: 0, a: 0}
-  waterThreshold: .25
-  sandThreshold: .270000011
-  grassThreshold: .449999988
-  rockThreshold: .99000001
-  elevation: 3.3499999
-  heightVariance: 1
-  perlinShadowBias: 2
-  mapCoefficient: 0
-  waterAnimation: 0
   x: 0
   y: 0
 --- !u!33 &537509196
@@ -562,9 +550,9 @@ Light:
   m_GameObject: {fileID: 2025940363}
   m_Enabled: 1
   serializedVersion: 6
-  m_Type: 1
+  m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: .75
+  m_Intensity: .300000012
   m_Range: 1500000
   m_SpotAngle: 30
   m_CookieSize: 10
