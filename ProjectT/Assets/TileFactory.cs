@@ -8,6 +8,8 @@ public class TileFactory : MonoBehaviour {
 	public GameObject tileFactory;
 	public Camera tileCamera;
 	public Camera mainCamera;
+
+	public float tileSize = 10;
 	
 	public bool invalidate = false;
 	
@@ -17,11 +19,14 @@ public class TileFactory : MonoBehaviour {
 	RenderTexture nirvanaTexture;
 	
 	private Dictionary<Vector2, Tile> createdTiles;
+	private List<Tile> tilePool;
+	private float tileStopwatch = 0;
 	
 	// Use this for initialization
 	void Start () {
-		
+
 		createdTiles = new Dictionary<Vector2, Tile> ();
+		tilePool = new List<Tile> ();
 		
 		nirvanaTexture = new RenderTexture (1, 1, 24);
 		
@@ -35,29 +40,48 @@ public class TileFactory : MonoBehaviour {
 	}
 	
 	private void buildTile(int x, int y) {
-		
-		var plane = (GameObject)Instantiate(Resources.Load("Tile"));
-		
-		plane.transform.position = new Vector3 (x * 10, y * 10);
-		var texRenderer = plane.GetComponent<Renderer> ();
-		
+
+		var tile = getTile ();
+
+		createdTiles.Add (new Vector2 (x, y), tile);
+
+		tile.plane.transform.position = new Vector3 (x * tileSize, y * tileSize);
+
 		var terrainGen = tileFactory.GetComponent<TerrainGenerator> ();
 		terrainGen.x = - x * 10 * terrainGen.scale;
 		terrainGen.y = - y * 10 * terrainGen.scale;
-		
-		var renderTexture = new RenderTexture (1024, 1024, 24);
-		
-		texRenderer.material.mainTexture = renderTexture;
-		tileCamera.targetTexture = renderTexture;
-		
-		createdTiles.Add (new Vector2 (x, y), new TileFactory.Tile(plane, renderTexture));
-		
+
+		tileCamera.targetTexture = tile.renderTexture;
 		tileCamera.enabled = true;
 	}
 	
-	void OnPreRender() {
-		
-		
+	private Tile getTile() {
+		if (tilePool.Count > 0) {
+			var tile = tilePool [0];
+			tilePool.Remove (tile);
+			tile.plane.GetComponent<MeshRenderer> ().enabled = true;
+			return tile;
+		} else {
+			var plane = (GameObject)Instantiate(Resources.Load("Tile"));
+
+			plane.transform.localScale = Vector3.one * (tileSize / 10);
+
+			var texRenderer = plane.GetComponent<Renderer> ();
+
+
+
+			var renderTexture = new RenderTexture ((int)(256 * tileSize / 10), (int)(256 * tileSize / 10), 24);
+
+			texRenderer.material.mainTexture = renderTexture;
+
+
+			return new Tile(plane, renderTexture);
+		}
+	}
+
+	private void removeTile(Tile tile) {
+		tile.plane.GetComponent<MeshRenderer> ().enabled = false;
+		tilePool.Add (tile);
 	}
 	
 	private bool checkTile(Vector2 pos, int level = 0) {
@@ -67,7 +91,7 @@ public class TileFactory : MonoBehaviour {
 		
 		level++;
 		
-		if (!tileCreated (pos)) {
+		if (!isTileCreated (pos)) {
 			buildTile ((int)pos.x, (int)pos.y);
 			return true;
 		}
@@ -100,14 +124,14 @@ public class TileFactory : MonoBehaviour {
 		
 	}
 	
-	private bool tileCreated(Vector2 pos) {
+	private bool isTileCreated(Vector2 pos) {
 		return createdTiles.ContainsKey (pos);
 	}
 	
 	void OnPostRender() {
 		tileCamera.targetTexture = nirvanaTexture;
 		
-		Vector2 curPos = new Vector2((int)(mainCamera.transform.position.x / 10), (int)(mainCamera.transform.position.y / 10));
+		Vector2 curPos = new Vector2((int)(mainCamera.transform.position.x / tileSize), (int)(mainCamera.transform.position.y / tileSize));
 		
 		if (invalidate) {
 			
@@ -115,16 +139,12 @@ public class TileFactory : MonoBehaviour {
 			
 			foreach (var key in keys2) {
 				var value = createdTiles [key];
-				
-				Destroy (value.renderTexture, 0.0f);
-				Destroy (value.plane, 0.0f);
 				createdTiles.Remove (key);
+				removeTile (value);
 			}
 			
 			invalidate = false;
 		}
-		
-		checkTile (curPos);
 		
 		List<Vector2> keys = new List<Vector2> (createdTiles.Keys);
 		
@@ -132,16 +152,25 @@ public class TileFactory : MonoBehaviour {
 			var value = createdTiles[key];
 			
 			if ((key - curPos).magnitude > keepDistance) {
-				Destroy (value.renderTexture, 0.1f);
-				Destroy (value.plane, 0.2f);
 				createdTiles.Remove (key);
+				removeTile (value);
 			}
+		}
+
+		if (tileStopwatch != 0) {
+			Debug.Log ("Tile creation took " + ((Time.realtimeSinceStartup - tileStopwatch) * 1000) + "ms");
+			tileStopwatch = 0;
+		}
+
+		if (checkTile (curPos)) {
+			tileStopwatch = Time.realtimeSinceStartup;
 		}
 	}
 	
 	public void invalidateTiles() {
 		invalidate = true;
 	}
+
 	
 	public class Tile {
 		public GameObject plane;
