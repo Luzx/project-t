@@ -173,17 +173,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: .100000001
-  waterColor: {r: .272058845, g: .969878197, b: 1, a: 0}
-  sandColor: {r: 1, g: .8482759, b: 0, a: 0}
-  grassColor: {r: .20588237, g: 1, b: .244219154, a: 0}
-  rockColor: {r: .345588207, g: .345588207, b: .345588207, a: 0}
+  waterColor: {r: .337802768, g: .453439385, b: .522058845, a: 0}
+  sandColor: {r: .501960814, g: .478431374, b: .345098048, a: 0}
+  grassColor: {r: .309958935, g: .463235319, b: .317358494, a: 0}
+  rockColor: {r: .540657401, g: .550829232, b: .588235259, a: 0}
   iceColor: {r: .904411793, g: .904411793, b: .904411793, a: 0}
   waterThreshold: .25
-  sandThreshold: .270000011
+  sandThreshold: .360000014
   grassThreshold: .699999988
   rockThreshold: 1.30999994
   elevation: -.439999998
-  heightVariance: 1.5
+  heightVariance: 1.40999997
   perlinShadowBias: 1.5
   mapCoefficient: -7
 --- !u!1 &537509192

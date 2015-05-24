@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: heightmap
-  m_Shader: {fileID: 4800000, guid: 24ef604354f5a584ca9923785273f2fa, type: 3}
-  m_ShaderKeywords: _PARALLAXMAP
+  m_Name: None
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -18,7 +18,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 8400000, guid: ebb8b1fcd2046d04fb9e4ef2113e0e24, type: 2}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -37,16 +37,9 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _Tex
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
           name: _ParallaxMap
         second:
-          m_Texture: {fileID: 8400000, guid: ebb8b1fcd2046d04fb9e4ef2113e0e24, type: 2}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -100,7 +93,7 @@ Material:
       data:
         first:
           name: _Glossiness
-        second: 0
+        second: .5
       data:
         first:
           name: _Metallic
@@ -108,7 +101,7 @@ Material:
       data:
         first:
           name: _Parallax
-        second: .0850000009
+        second: .0199999996
       data:
         first:
           name: _ZWrite
@@ -137,22 +130,6 @@ Material:
         first:
           name: _Mode
         second: 0
-      data:
-        first:
-          name: _Exposure
-        second: 6.26000023
-      data:
-        first:
-          name: _SunSize
-        second: .0670000017
-      data:
-        first:
-          name: _AtmosphereThickness
-        second: 3.52999997
-      data:
-        first:
-          name: _Rotation
-        second: 0
     m_Colors:
       data:
         first:
@@ -161,20 +138,8 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
+        second: {r: .800000012, g: .800000012, b: .800000012, a: 1}
       data:
         first:
           name: _EmissionColorUI
         second: {r: 1, g: 1, b: 1, a: 1}
-      data:
-        first:
-          name: _GroundColor
-        second: {r: .368999988, g: .349000007, b: .340999991, a: 1}
-      data:
-        first:
-          name: _SkyTint
-        second: {r: .5, g: .5, b: .5, a: 1}
-      data:
-        first:
-          name: _Tint
-        second: {r: .5, g: .5, b: .5, a: .5}

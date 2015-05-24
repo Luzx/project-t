@@ -76,22 +76,22 @@
 			if (height < _waterThreshold) 
 			{
 				if (height < 0) height = 0;
-				o.Albedo = (height + 0.7) * _perlinShadowBias * _waterColor;//fixed3 (((n) + 0.7) * _perlinShadowBias * 0.2, ((n) + 0.7) * _perlinShadowBias * 0.3, ((n) + 0.7) * _perlinShadowBias * 0.8);
+				o.Albedo = (height - _waterThreshold) + _perlinShadowBias * _waterColor;//fixed3 (((n) + 0.7) * _perlinShadowBias * 0.2, ((n) + 0.7) * _perlinShadowBias * 0.3, ((n) + 0.7) * _perlinShadowBias * 0.8);
 			}
 
 			else if (height * _heightVariance < _sandThreshold) 
-				o.Albedo = height * _perlinShadowBias * _sandColor;//fixed3 (n * _perlinShadowBias * 1, n * _perlinShadowBias * 0.7, n * _perlinShadowBias * 0.3);
+				o.Albedo = ((height - _sandThreshold) / 30) + _perlinShadowBias * _sandColor;//fixed3 (n * _perlinShadowBias * 1, n * _perlinShadowBias * 0.7, n * _perlinShadowBias * 0.3);
 
 					
 			else if (height * _heightVariance < _grassThreshold) 
-				o.Albedo = height * _perlinShadowBias * _grassColor;//fixed3 (n * _perlinShadowBias * 0.2, n * _perlinShadowBias * 0.7, n * _perlinShadowBias * 0.2);
+				o.Albedo = (height - _grassThreshold) + _perlinShadowBias * _grassColor;//fixed3 (n * _perlinShadowBias * 0.2, n * _perlinShadowBias * 0.7, n * _perlinShadowBias * 0.2);
 	
 					
 			else if (height * _heightVariance < _rockThreshold) 
-				o.Albedo = height * _perlinShadowBias * _rockColor;//fixed3 (n * _perlinShadowBias * 0.4, n * _perlinShadowBias * 0.4, n * _perlinShadowBias * 0.3);
+				o.Albedo = (height - _rockThreshold) + _perlinShadowBias * _rockColor;//fixed3 (n * _perlinShadowBias * 0.4, n * _perlinShadowBias * 0.4, n * _perlinShadowBias * 0.3);
 
 
-			else o.Albedo = height * _perlinShadowBias * _iceColor;//fixed3 (n * _perlinShadowBias * 0.6, n * _perlinShadowBias * 0.6, n * _perlinShadowBias * 0.7);
+			else o.Albedo = height + _perlinShadowBias * _iceColor;//fixed3 (n * _perlinShadowBias * 0.6, n * _perlinShadowBias * 0.6, n * _perlinShadowBias * 0.7);
 
 			
 			//Other parameters
