@@ -99,7 +99,8 @@
 			o.Normal = getNormal(_MainTex, IN.uv_MainTex, 10);
 			
 			
-			
+			//Compute slope as the cosine to the angle between the surface normal and the camera direction
+			float slope = dot(o.Normal, float3(0, 0, 1));
 			
 			//o.Albedo.rgb = fixed4(slope , slope, slope, 1);
 			
@@ -125,7 +126,10 @@
 	
 					
 			else if (height * _heightVariance < _rockThreshold) 
-				o.Albedo = (height - _rockThreshold) + _perlinShadowBias * _rockColor;
+			{
+				if (slope < 0.8) o.Albedo = _perlinShadowBias * _grassColor;
+				else o.Albedo = (height - _rockThreshold) + _perlinShadowBias * _rockColor;
+			}
 
 
 			else o.Albedo = _perlinShadowBias * _iceColor;//height + _perlinShadowBias * _iceColor;
