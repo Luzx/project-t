@@ -5,12 +5,12 @@ RenderTexture:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: heightmap
+  m_Name: terrain_sd
   m_ImageContentsHash:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
-  m_Width: 1024
-  m_Height: 1024
+  m_Width: 512
+  m_Height: 512
   m_AntiAliasing: 1
   m_DepthFormat: 2
   m_ColorFormat: 0
