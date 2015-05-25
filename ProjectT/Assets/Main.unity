@@ -232,9 +232,9 @@ MonoBehaviour:
   m_frequency: 1.5
   m_lacunarity: 2.5
   m_gain: .5
-  scale: 1
-  moveSpeed: .100000001
-  x: 0
+  scale: .5
+  moveSpeed: 10
+  x: 10
   y: 0
 --- !u!33 &537509196
 MeshFilter:
