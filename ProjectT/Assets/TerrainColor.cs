@@ -23,6 +23,7 @@ public class TerrainColor : MonoBehaviour {
 	public float perlinShadowBias;
 	
 	public float mapCoefficient;
+	public float mountainHeight = 10;
 	
 
 	
@@ -50,6 +51,11 @@ public class TerrainColor : MonoBehaviour {
 			mapCoefficient += moveSpeed;
 		if (Input.GetKey ("f"))
 			mapCoefficient -= moveSpeed;
+
+		if (Input.GetKey ("n"))
+			mountainHeight += moveSpeed;
+		if (Input.GetKey ("m"))
+			mountainHeight -= moveSpeed;
 	}
 	
 	void SetShaderArguments ()
@@ -63,6 +69,8 @@ public class TerrainColor : MonoBehaviour {
 		renderer.material.SetFloat ("_perlinShadowBias", perlinShadowBias);
 		renderer.material.SetFloat ("_perlinShadowBias", perlinShadowBias);
 		renderer.material.SetFloat ("_mapCoefficient", mapCoefficient);
+		renderer.material.SetFloat ("_mountainHeight", mountainHeight);
+
 		renderer.material.SetColor ("_waterColor", waterColor);
 		renderer.material.SetColor ("_sandColor", sandColor);
 		renderer.material.SetColor ("_grassColor", grassColor);

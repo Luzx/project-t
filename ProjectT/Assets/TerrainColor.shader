@@ -21,7 +21,7 @@
 
 		sampler2D _MainTex;
 		sampler2D _BumpMap;
-		uniform float _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _mapCoefficient, _heightVariance, _normalHeight;
+		uniform float _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _mapCoefficient, _heightVariance, _mountainHeight;
 		uniform fixed3 _waterColor, _sandColor, _grassColor, _rockColor, _iceColor;
 
 		float _Parallax;
@@ -60,20 +60,15 @@
 			
 			return norm;
 		}
-
-
-		void surf (Input IN, inout SurfaceOutputStandard o) {
-
-			half h = tex2D (_MainTex, IN.uv_MainTex).r;
-
-			float2 offset = ParallaxOffset (h, _Parallax, IN.viewDir);
-			IN.uv_MainTex += offset;
-			IN.uv_BumpMap += offset;
-
-
-			//Capture heightmap pixel
-			fixed4 mapPixel = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-			
+		
+		fixed4 getPixel(sampler2D map, float2 pos)
+		{
+			//TODO: Add optional smoothing
+			return tex2D(map, pos);
+		}
+		
+		float computeHeight(fixed4 mapPixel)
+		{
 			//Get height from red channel
 			float height = mapPixel.r;
 			
@@ -82,7 +77,6 @@
 			
 			//Get biomeElevation from blue channel
 			float biomeElevation = mapPixel.b;
-
 			
 			height *= _heightVariance * biomeHeightVariance;
 				
@@ -96,16 +90,34 @@
 			height = height + _elevation + biomeElevation;
 			
 			
-			o.Normal = getNormal(_MainTex, IN.uv_MainTex, 10);
+			return height;
+		}
+		
+		void setTerrainColors(float height, inout SurfaceOutputStandard o)
+		{
+			
+		}
+
+		void surf (Input IN, inout SurfaceOutputStandard o) {
+
+			half h = tex2D (_MainTex, IN.uv_MainTex).r;
+
+			float2 offset = ParallaxOffset (h, _Parallax, IN.viewDir);
+			IN.uv_MainTex += offset;
+			IN.uv_BumpMap += offset;
+
+
+			//Capture heightmap pixel
+			fixed4 mapPixel = getPixel(_MainTex, IN.uv_MainTex) * _Color;
+			
+			float height = computeHeight(mapPixel);
+			
+			o.Normal = getNormal(_MainTex, IN.uv_MainTex, _mountainHeight);
 			
 			
 			//Compute slope as the cosine to the angle between the surface normal and the camera direction
 			float slope = dot(o.Normal, float3(0, 0, 1));
-			
-			//o.Albedo.rgb = fixed4(slope , slope, slope, 1);
-			
 
-			
 			
 			//Assign color zones
 			//o.Albedo (fixed3) is rgb color of output pixel
@@ -127,7 +139,7 @@
 					
 			else if (height * _heightVariance < _rockThreshold) 
 			{
-				if (slope < 0.8) o.Albedo = _perlinShadowBias * _grassColor;
+				if (slope > 0.8 || height * _heightVariance > _rockThreshold - 0.1) o.Albedo = (height - _grassThreshold) + _perlinShadowBias * _grassColor;
 				else o.Albedo = (height - _rockThreshold) + _perlinShadowBias * _rockColor;
 			}
 
