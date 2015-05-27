@@ -112,7 +112,7 @@
 			
 			float height = computeHeight(mapPixel);
 			
-			o.Normal = getNormal(_MainTex, IN.uv_MainTex, _mountainHeight);
+			o.Normal = getNormal(_MainTex, IN.uv_MainTex, _mountainHeight) * mapPixel.g;
 			
 			
 			//Compute slope as the cosine to the angle between the surface normal and the camera direction
@@ -139,12 +139,12 @@
 					
 			else if (height * _heightVariance < _rockThreshold) 
 			{
-				if (slope > 0.8 || height * _heightVariance > _rockThreshold - 0.1) o.Albedo = (height - _grassThreshold) + _perlinShadowBias * _grassColor;
+				if (slope > 0.8 || height * _heightVariance < _grassThreshold + 0.2) o.Albedo = (height - _grassThreshold) + _perlinShadowBias * _grassColor;
 				else o.Albedo = (height - _rockThreshold) + _perlinShadowBias * _rockColor;
 			}
 
 
-			else o.Albedo = _perlinShadowBias * _iceColor;//height + _perlinShadowBias * _iceColor;
+			else o.Albedo = slope * _perlinShadowBias * _iceColor + 0.7;
 
 			
 			//Other parameters

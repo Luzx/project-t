@@ -173,6 +173,7 @@ MonoBehaviour:
   heightVariance: 1.40999997
   perlinShadowBias: 1.5
   mapCoefficient: -7
+  mountainHeight: 10
 --- !u!1 &537509192
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,8 +229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1154dfc65fee460ab5e009632be78c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_seed: 0
-  m_frequency: 1.5
+  m_seed: 2147483647
+  m_frequency: 2
   m_lacunarity: 2.5
   m_gain: .5
   scale: .5
