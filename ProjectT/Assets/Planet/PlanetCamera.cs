@@ -1,10 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.ImageEffects;
 
 public class PlanetCamera : MonoBehaviour {
 
+	[Range(0.00f, 5.0f)]
 	public float MoveSpeed = 0.1f;
+
+	[Range(0.0001f, 30.0f)]
 	public float zoom = 5;
+
+	[Range(0.0f, 10.0f)]
+	public float blurStregth = 1.0f;
+
+	public GameObject mainCamera;
 
 	// Use this for initialization
 	void Start () {
@@ -37,5 +46,9 @@ public class PlanetCamera : MonoBehaviour {
 		transform.position = transform.position + movement * zoom * Time.deltaTime * 30f;
 
 		GetComponent<Camera> ().orthographicSize = zoom;
+
+		if (mainCamera != null) {
+			mainCamera.GetComponent<BlurOptimized> ().blurSize = blurStregth / zoom;
+		}
 	}
 }

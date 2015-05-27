@@ -355,6 +355,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: .100000001
   zoom: 5
+  blurStregth: 1
+  mainCamera: {fileID: 741840879}
 --- !u!1 &741840879
 GameObject:
   m_ObjectHideFlags: 0
