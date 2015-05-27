@@ -55,7 +55,7 @@ public class PlanetCamera : MonoBehaviour {
 
 		if (mainCamera != null) {
 
-			float blur = Math.Max(0, blurStregth / zoom - zeroBlurThreshold);
+			float blur = Math.Max(0, blurStregth / zoom - zeroBlurThreshold * blurStregth);
 
 			mainCamera.GetComponent<BlurOptimized> ().blurSize = blur;
 		}
