@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.ImageEffects;
+using System;
 
 public class PlanetCamera : MonoBehaviour {
 
@@ -12,6 +13,9 @@ public class PlanetCamera : MonoBehaviour {
 
 	[Range(0.0f, 10.0f)]
 	public float blurStregth = 1.0f;
+
+	[Range(0.0f, 5.0f)]
+	public float zeroBlurThreshold = 0.2f;
 
 	public GameObject mainCamera;
 
@@ -25,6 +29,7 @@ public class PlanetCamera : MonoBehaviour {
 		var movement = new Vector3();
 
 		zoom *= 1.0f + (Input.mouseScrollDelta.y * 0.1f);
+		zoom = Math.Max (0.01f, zoom);
 
 		if(Input.GetKey(KeyCode.UpArrow)) {
 			movement += Vector3.up * MoveSpeed;
@@ -45,10 +50,14 @@ public class PlanetCamera : MonoBehaviour {
 
 		transform.position = transform.position + movement * zoom * Time.deltaTime * 30f;
 
+
 		GetComponent<Camera> ().orthographicSize = zoom;
 
 		if (mainCamera != null) {
-			mainCamera.GetComponent<BlurOptimized> ().blurSize = blurStregth / zoom;
+
+			float blur = Math.Max(0, blurStregth / zoom - zeroBlurThreshold);
+
+			mainCamera.GetComponent<BlurOptimized> ().blurSize = blur;
 		}
 	}
 }
