@@ -78,7 +78,7 @@ public class ImprovedPerlinNoise
 	{
 		if(m_permTable2D) return;
 		
-		m_permTable2D = new Texture2D(SIZE, SIZE, TextureFormat.ARGB32, false, true);
+		m_permTable2D = new Texture2D(SIZE, SIZE, TextureFormat.RGBAFloat, false, true);
 		m_permTable2D.filterMode = FilterMode.Point;
 		m_permTable2D.wrapMode = TextureWrapMode.Repeat;
 		

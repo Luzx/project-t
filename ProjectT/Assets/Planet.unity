@@ -154,6 +154,7 @@ MonoBehaviour:
   heightVariance: 1.40999997
   perlinShadowBias: 1.5
   mapCoefficient: 0
+  mountainHeight: 10
 --- !u!33 &485910291
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -366,6 +367,7 @@ GameObject:
   - 124: {fileID: 741840882}
   - 92: {fileID: 741840881}
   - 81: {fileID: 741840880}
+  - 114: {fileID: 741840885}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: Untagged
@@ -438,6 +440,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+--- !u!114 &741840885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 741840879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fc6bde01469c7b4badee5362f191d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  downsample: 1
+  blurSize: 3
+  blurIterations: 2
+  blurType: 0
+  blurShader: {fileID: 4800000, guid: f9d5fa183cd6b45eeb1491f74863cd91, type: 3}
 --- !u!1 &1253436740
 GameObject:
   m_ObjectHideFlags: 0

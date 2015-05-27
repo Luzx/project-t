@@ -97,20 +97,18 @@
 		{
 			
 		}
+		
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
-
-			half h = tex2D (_MainTex, IN.uv_MainTex).r;
-
-			float2 offset = ParallaxOffset (h, _Parallax, IN.viewDir);
-			IN.uv_MainTex += offset;
-			IN.uv_BumpMap += offset;
-
 
 			//Capture heightmap pixel
 			fixed4 mapPixel = getPixel(_MainTex, IN.uv_MainTex) * _Color;
 			
 			float height = computeHeight(mapPixel);
+			
+			float2 offset = ParallaxOffset (height, _Parallax, IN.viewDir);
+			IN.uv_MainTex += offset;
+			IN.uv_BumpMap += offset;
 			
 			o.Normal = getNormal(_MainTex, IN.uv_MainTex, _mountainHeight) * mapPixel.g;
 			
@@ -145,7 +143,8 @@
 
 
 			else o.Albedo = slope * _perlinShadowBias * _iceColor + 0.7;
-
+			
+			
 			
 			//Other parameters
 			o.Metallic = _Metallic;
