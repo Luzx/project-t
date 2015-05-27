@@ -17,6 +17,13 @@ public class PlanetCamera : MonoBehaviour {
 	[Range(0.0f, 5.0f)]
 	public float zeroBlurThreshold = 0.2f;
 
+	[Range(1.0f, 30.0f)]
+	public float iterationThreshold2 = 0.2f;
+	[Range(1.0f, 30.0f)]
+	public float iterationThreshold3 = 0.2f;
+	[Range(1.0f, 30.0f)]
+	public float iterationThreshold4 = 0.2f;
+
 	public GameObject mainCamera;
 
 	// Use this for initialization
@@ -54,10 +61,14 @@ public class PlanetCamera : MonoBehaviour {
 		GetComponent<Camera> ().orthographicSize = zoom;
 
 		if (mainCamera != null) {
-
+			
 			float blur = Math.Max(0, blurStregth / zoom - zeroBlurThreshold * blurStregth);
 
-			mainCamera.GetComponent<BlurOptimized> ().blurSize = blur;
+			var blurrer = mainCamera.GetComponent<BlurOptimized> ();
+			blurrer.blurIterations = (blur > iterationThreshold2) ? 2 : 1;
+			blurrer.blurIterations = (blur > iterationThreshold3) ? 3 : blurrer.blurIterations;
+			blurrer.blurIterations = (blur > iterationThreshold4) ? 4 : blurrer.blurIterations;
+			blurrer.blurSize = blur / blurrer.blurIterations;
 		}
 	}
 }
