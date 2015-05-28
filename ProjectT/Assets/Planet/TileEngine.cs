@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 
 public class TileEngine : MonoBehaviour {
 
@@ -29,6 +30,8 @@ public class TileEngine : MonoBehaviour {
 	public float m_gain = 0.5f;
 	public float scale = 10;
 
+	public int size = 1024;
+
 	private string path;
 
 	//int x = 0;
@@ -42,7 +45,7 @@ public class TileEngine : MonoBehaviour {
 		material.SetTexture("_PermTable1D", m_perlin.GetPermutationTable1D());
 		material.SetTexture("_Gradient2D", m_perlin.GetGradient2D());
 
-		nirvanaTexture = new RenderTexture (1024, 1024, 24);
+		nirvanaTexture = new RenderTexture (size, size, 24, RenderTextureFormat.ARGBFloat);
 		material.mainTexture = nirvanaTexture;
 
 
@@ -52,9 +55,15 @@ public class TileEngine : MonoBehaviour {
 		tileFiles = new Dictionary<Vector2, string>();
 
 
-		for(int x = -3; x <= 3; x++) {
-			for(int y = -3; y <= 3; y++) {
+		for(int x = -10; x <= 10; x++) {
+			for(int y = -10; y <= 10; y++) {
+				var timer = new Stopwatch ();
+
+				timer.Start ();
 				tileFiles.Add(new Vector2(x, y), genTile (x, y));
+
+				UnityEngine.Debug.Log ("generating a tile took " + timer.ElapsedMilliseconds + "ms");
+
 			}
 		}
 		loaded = true;
@@ -68,11 +77,14 @@ public class TileEngine : MonoBehaviour {
 
 	private string genTile(int x, int y) {
 		
-		var texture = new RenderTexture (1024, 1024, 24);
+		var texture = new RenderTexture (size, size, 24, RenderTextureFormat.ARGBFloat);
 
 		buildTerrain (x, y, texture);
 
 		var tex2d = toTex2d(texture);
+		tex2d.filterMode = FilterMode.Bilinear;
+		//tex2d.Compress (true);
+		tex2d.Apply ();
 
 		var bytes = tex2d.EncodeToPNG ();
 
@@ -126,6 +138,29 @@ public class TileEngine : MonoBehaviour {
 
 		return null;
 	}
+
+	public WWW getTileLoader(int x, int y) {
+		var tilefile = getTilePath (x, y);
+
+		if (tilefile != null) {
+
+			var www = new WWW ("file://" + tilefile);
+
+			return www;
+		}
+
+		return null;
+	}
+
+	/*public Texture2D getTileData(int x, int y) {
+		Vector2 pos = new Vector2 (x, y);
+
+		if (tileFiles.ContainsKey (pos)) {
+			return tileFiles [pos];
+		}
+
+		return null;
+	}*/
 
 
 }

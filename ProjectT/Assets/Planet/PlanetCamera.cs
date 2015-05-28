@@ -3,6 +3,7 @@ using System.Collections;
 using UnityStandardAssets.ImageEffects;
 using System;
 
+[ExecuteInEditMode]
 public class PlanetCamera : MonoBehaviour {
 
 	[Range(0.00f, 5.0f)]

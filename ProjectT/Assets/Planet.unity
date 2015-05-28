@@ -119,6 +119,7 @@ MonoBehaviour:
   m_lacunarity: 2.5
   m_gain: .5
   scale: 1
+  size: 512
 --- !u!4 &80747888
 Transform:
   m_ObjectHideFlags: 0
@@ -316,7 +317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: .100000001
-  zoom: .261425048
+  zoom: 5
   blurStregth: .980000019
   zeroBlurThreshold: 3.21000004
   iterationThreshold2: 5.30000019
@@ -438,7 +439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   downsample: 1
-  blurSize: 3
+  blurSize: 0
   blurIterations: 1
   blurType: 0
   blurShader: {fileID: 4800000, guid: f9d5fa183cd6b45eeb1491f74863cd91, type: 3}
