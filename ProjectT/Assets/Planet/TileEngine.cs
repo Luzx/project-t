@@ -45,7 +45,7 @@ public class TileEngine : MonoBehaviour {
 		material.SetTexture("_PermTable1D", m_perlin.GetPermutationTable1D());
 		material.SetTexture("_Gradient2D", m_perlin.GetGradient2D());
 
-		nirvanaTexture = new RenderTexture (size, size, 24, RenderTextureFormat.ARGBFloat);
+		nirvanaTexture = new RenderTexture (size, size, 24, RenderTextureFormat.ARGB32);
 		material.mainTexture = nirvanaTexture;
 
 
@@ -77,7 +77,7 @@ public class TileEngine : MonoBehaviour {
 
 	private string genTile(int x, int y) {
 		
-		var texture = new RenderTexture (size, size, 24, RenderTextureFormat.ARGBFloat);
+		var texture = new RenderTexture (size, size, 24, RenderTextureFormat.ARGB32);
 
 		buildTerrain (x, y, texture);
 
@@ -104,7 +104,7 @@ public class TileEngine : MonoBehaviour {
 
 		RenderTexture.active = renderTexture;
 
-		Texture2D tex = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGBAFloat, false);
+		Texture2D tex = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false);
 		tex.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
 		tex.Apply ();
 

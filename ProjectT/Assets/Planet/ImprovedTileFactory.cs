@@ -83,7 +83,8 @@ public class ImprovedTileFactory : MonoBehaviour {
 
 	private void buildTile(int x, int y) {
 
-		var texLoader = tileEngine.GetComponent<TileEngine> ().getTileLoader(x, y);
+		var tileEngineComponent = tileEngine.GetComponent<TileEngine> ();
+		var texLoader = tileEngineComponent.getTileLoader(x, y);
 
 		if (texLoader != null) {
 
@@ -97,7 +98,7 @@ public class ImprovedTileFactory : MonoBehaviour {
 
 			tile.texLoader = texLoader;
 
-			var tex = new Texture2D (512, 512, TextureFormat.RGBAFloat, false);
+			var tex = new Texture2D (tileEngineComponent.size, tileEngineComponent.size, TextureFormat.ARGB32, false);
 			tile.texture = tex;
 
 			tile.plane.GetComponent<Renderer> ().material.mainTexture = tex;
