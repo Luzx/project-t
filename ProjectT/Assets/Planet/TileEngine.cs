@@ -30,7 +30,7 @@ public class TileEngine : MonoBehaviour {
 	public float m_gain = 0.5f;
 	public float scale = 10;
 
-	public int size = 1024;
+	public int size = 512;
 
 	private string path;
 
@@ -63,7 +63,6 @@ public class TileEngine : MonoBehaviour {
 				tileFiles.Add(new Vector2(x, y), genTile (x, y));
 
 				UnityEngine.Debug.Log ("generating a tile took " + timer.ElapsedMilliseconds + "ms");
-
 			}
 		}
 		loaded = true;
@@ -82,9 +81,6 @@ public class TileEngine : MonoBehaviour {
 		buildTerrain (x, y, texture);
 
 		var tex2d = toTex2d(texture);
-		tex2d.filterMode = FilterMode.Bilinear;
-		//tex2d.Compress (true);
-		tex2d.Apply ();
 
 		var bytes = tex2d.EncodeToPNG ();
 
@@ -151,16 +147,5 @@ public class TileEngine : MonoBehaviour {
 
 		return null;
 	}
-
-	/*public Texture2D getTileData(int x, int y) {
-		Vector2 pos = new Vector2 (x, y);
-
-		if (tileFiles.ContainsKey (pos)) {
-			return tileFiles [pos];
-		}
-
-		return null;
-	}*/
-
-
+		
 }

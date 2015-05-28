@@ -93,18 +93,13 @@ public class ImprovedTileFactory : MonoBehaviour {
 			tile.plane.transform.position = new Vector3 (x * tileSize, y * tileSize);
 
 
-			//var tex = new Texture2D (1024, 1024, TextureFormat.RGBAFloat, false);
-			//tex.LoadImage (texData);
-
 			tile.texLoader = texLoader;
 
 			var tex = new Texture2D (tileEngineComponent.size, tileEngineComponent.size, TextureFormat.ARGB32, false);
+			tex.filterMode = FilterMode.Point;
 			tile.texture = tex;
 
 			tile.plane.GetComponent<Renderer> ().material.mainTexture = tex;
-			//tile.texture = tex;
-
-
 
 			createdTiles.Add (new Vector2 (x, y), tile);
 
@@ -124,9 +119,6 @@ public class ImprovedTileFactory : MonoBehaviour {
 			var plane = (GameObject)Instantiate(Resources.Load("Tile"));
 
 			plane.transform.localScale = Vector3.one * (tileSize / 10);
-
-			//var texRenderer = plane.GetComponent<Renderer> ();
-
 
 			return new Tile(plane);
 		}
