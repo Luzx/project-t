@@ -71,6 +71,8 @@ public class TerrainColor : MonoBehaviour {
 		renderer.material.SetFloat ("_mapCoefficient", mapCoefficient);
 		renderer.material.SetFloat ("_mountainHeight", mountainHeight);
 
+		renderer.material.SetFloat ("_LevelWidth", 1.0f / 5.0f);
+
 		renderer.material.SetColor ("_waterColor", waterColor);
 		renderer.material.SetColor ("_sandColor", sandColor);
 		renderer.material.SetColor ("_grassColor", grassColor);
