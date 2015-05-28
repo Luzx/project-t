@@ -1,7 +1,7 @@
 ﻿Shader "Custom/Perlin" {
 	SubShader {
 		Pass {
-
+			ZTest Always
 			CGPROGRAM
 
 			#pragma vertex vert
@@ -11,7 +11,7 @@
 
 
 			uniform sampler2D _PermTable1D, _Gradient2D;
-			uniform float _Frequency, _Lacunarity, _Gain, _x, _y, _xStart, _xEnd, _yStart, _yEnd, _scale, _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _mapCoefficient, _heightVariance, _waterAnimation;
+			uniform float _Frequency, _Lacunarity, _Gain, _x, _y, _scale;
 			
 			
 			struct v2f {
@@ -22,7 +22,7 @@
 			v2f vert (appdata_base v) {
 				v2f o;
 				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
-				o.uv = v.vertex;
+				o.uv = v.texcoord;
 				return o;
 			}
 			
@@ -110,33 +110,33 @@
 
 			fixed4 frag (v2f i) : SV_Target {
 				
-				i.uv.xz *= _scale;
+				i.uv.xy *= _scale;
 				
-				i.uv.xz += float2(_x, _y);
+				i.uv.xy += float2(_x, _y);
 			
 				//Biomes
 				//Constant factor is biome scale, float2 is seed relative to master seed.
-				float biomeHeighVariance = ridgedmf(i.uv.xz * 0.01 + float2(1000, 1000), 4, 1.0, _Frequency, _Lacunarity) * ridgedmf(i.uv.xz * 0.1 + float2(10000, 10000), 4, 1.0, _Frequency, _Lacunarity) + ridgedmf(i.uv.xz * 0.1 + float2(2000, 1000), 4, 1.0, _Frequency, _Lacunarity) * 0.1;//inoise(i.uv.xz * 0.03 + float2(1000, 1000));
-				float biomeElevation = ridgedmf(i.uv.xz * 0.01 + float2(-1000, -1000), 4, 1.0, _Frequency, _Lacunarity) * ridgedmf(i.uv.xz * 0.005 + float2(-1000, -1000), 4, 1.0, _Frequency, _Lacunarity) + ridgedmf(i.uv.xz * 0.1 + float2(1000, 10000), 4, 1.0, _Frequency, _Lacunarity) * 0.1;//inoise(i.uv.xz * 0.03 + float2(-1000, -1000));
+				float biomeHeighVariance = ridgedmf(i.uv.xy * 0.01 + float2(1000, 1000), 4, 1.0, _Frequency, _Lacunarity) * ridgedmf(i.uv.xy * 0.1 + float2(10000, 10000), 4, 1.0, _Frequency, _Lacunarity) + ridgedmf(i.uv.xy * 0.1 + float2(2000, 1000), 4, 1.0, _Frequency, _Lacunarity) * 0.1;//inoise(i.uv.xy * 0.03 + float2(1000, 1000));
+				float biomeElevation = ridgedmf(i.uv.xy * 0.01 + float2(-1000, -1000), 4, 1.0, _Frequency, _Lacunarity) * ridgedmf(i.uv.xy * 0.005 + float2(-1000, -1000), 4, 1.0, _Frequency, _Lacunarity) + ridgedmf(i.uv.xy * 0.1 + float2(1000, 10000), 4, 1.0, _Frequency, _Lacunarity) * 0.1;//inoise(i.uv.xy * 0.03 + float2(-1000, -1000));
 				
 
 				//fractal noise
-				//float n = fBm(i.uv.xz, 4);
+				//float n = fBm(i.uv.xy, 4);
 
 				
 				//turbulent noise
-				//float n = turbulence(i.uv.xz, 4);
+				//float n = turbulence(i.uv.xy, 4);
 				
 				
 				//ridged multi fractal
-				float height = ridgedmf(i.uv.xz, 4, 1.0, _Frequency, _Lacunarity);
+				float height = ridgedmf(i.uv.xy, 4, 1.0, _Frequency, _Lacunarity);
 				
 
-				height = height * inoise(i.uv.xz * 0.5) * 0.7 + height * 0.3;
-				//height += inoise(i.uv.xz * 100000 + i.uv.xz * 100000 * i.uv.xz) * 0.004;//ridgedmf(i.uv.xz * 3 + float2(1000, 1000), 4, 1.0, _Frequency, _Lacunarity) * max(1, (0.5/_scale) + 0.5);
+				height = height * inoise(i.uv.xy * 0.5) * 0.7 + height * 0.3;
+				//height += inoise(i.uv.xy * 100000 + i.uv.xy * 100000 * i.uv.xy) * 0.004;//ridgedmf(i.uv.xy * 3 + float2(1000, 1000), 4, 1.0, _Frequency, _Lacunarity) * max(1, (0.5/_scale) + 0.5);
+
 				
-				
-				return half4 (height, biomeHeighVariance, biomeElevation, 1);
+				return fixed4 (height, biomeHeighVariance, biomeElevation, 1);
 			}
 
 			ENDCG
