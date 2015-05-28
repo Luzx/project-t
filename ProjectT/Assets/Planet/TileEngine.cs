@@ -13,8 +13,6 @@ public class TileEngine : MonoBehaviour {
 
 	private Material material;
 
-	public Texture something;
-
 
 	public bool Loaded {
 		get {
