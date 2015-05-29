@@ -13,7 +13,7 @@
 		
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Standard 
+		#pragma surface surf Standard keepalpha 
 		//fullforwardshadows
 
 		// Use shader model 3.0 target, to get nicer looking lighting
@@ -122,22 +122,34 @@
 				o.Albedo.r = (height - _waterThreshold) + _perlinShadowBias;
 				o.Normal = o.Normal * height + float3(0, 0, 1) * (1 - height);
 				o.Emission.g = 0;
-				o.Emission.b = height;
+
 			}
 
 			else if (height * _heightVariance < _sandThreshold) 
 			{
 				o.Albedo.r = ((height - _sandThreshold) / 30) + _perlinShadowBias;
 				o.Emission.g = _LevelWidth;	
-				o.Emission.b = height * _heightVariance;
+
+				o.Normal.z *= 2;
 			}
 
 					
 			else if (height * _heightVariance < _grassThreshold) 
 			{
 				o.Albedo.r = (height - _grassThreshold) + _perlinShadowBias;
-				o.Emission.g = 2 * _LevelWidth;
-				o.Emission.b = height * _heightVariance;
+				
+				if (slope < 0.2)
+				{
+					o.Emission.g = 3 * _LevelWidth;
+					o.Normal.z *= 0.3;
+				}	
+				else
+				{
+					o.Emission.g = 2 * _LevelWidth;
+					o.Normal.z *= 3;
+				}
+				//o.Emission.g = 2 * _LevelWidth;
+
 			}
 	
 					
@@ -147,27 +159,30 @@
 				else o.Albedo.r = (height - _rockThreshold) + _perlinShadowBias;
 				
 				o.Emission.g = 3 * _LevelWidth;
-				o.Emission.b = height * _heightVariance;
+
+				o.Normal.z *= 0.3;
 			}
 
 
 			else 
 			{
-				o.Albedo.r = slope * _perlinShadowBias + 0.7;
+				o.Albedo.r = slope * _perlinShadowBias + 0.9;
 				o.Emission.g = 4 * _LevelWidth;
-				o.Emission.b = height * _heightVariance;
+				
+				//o.Normal.z *= 1;
+				
 			}
 			
 			
 			
-			
+			o.Emission.b = mapPixel.b;
 				
-			
-			
+			//o.Albedo = float3(mapPixel.a, mapPixel.a, mapPixel.a);
+
 			//Other parameters
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
-			o.Alpha = 1;//c.a;
+			o.Alpha = mapPixel.a;
 			//o.Emission = float3(0, o.Albedo.g, o.Albedo.b);
 			
 			

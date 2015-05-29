@@ -5,7 +5,7 @@
 			CGPROGRAM
 
 			#pragma vertex vert
-			#pragma fragment frag
+			#pragma fragment frag keepalpha 
 			#pragma target 3.0
 			#include "UnityCG.cginc"
 
@@ -136,7 +136,7 @@
 				//height += inoise(i.uv.xz * 100000 + i.uv.xz * 100000 * i.uv.xz) * 0.004;//ridgedmf(i.uv.xz * 3 + float2(1000, 1000), 4, 1.0, _Frequency, _Lacunarity) * max(1, (0.5/_scale) + 0.5);
 				
 				
-				return half4 (height, biomeHeighVariance, biomeElevation, 1);
+				return fixed4 (height, biomeHeighVariance, biomeElevation, 1);
 			}
 
 			ENDCG

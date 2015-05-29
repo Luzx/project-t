@@ -148,8 +148,8 @@ MonoBehaviour:
   iceColor: {r: .904411793, g: .904411793, b: .904411793, a: 0}
   waterThreshold: .25
   sandThreshold: .360000014
-  grassThreshold: .699999988
-  rockThreshold: 1.30999994
+  grassThreshold: .850000024
+  rockThreshold: 1.01999998
   elevation: -.439999998
   heightVariance: 1.40999997
   perlinShadowBias: 2.25999999
@@ -355,11 +355,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: .100000001
   zoom: .261425048
-  blurStregth: .980000019
-  zeroBlurThreshold: 3.21000004
-  iterationThreshold2: 5.30000019
-  iterationThreshold3: 14.8000002
-  iterationThreshold4: 30
+  blurStregth: 1.28999996
+  zeroBlurThreshold: 0
+  iterationThreshold2: 13
+  iterationThreshold3: 17.3999996
+  iterationThreshold4: 21.5
   mainCamera: {fileID: 741840879}
 --- !u!1 &741840879
 GameObject:
@@ -374,7 +374,6 @@ GameObject:
   - 92: {fileID: 741840881}
   - 81: {fileID: 741840880}
   - 114: {fileID: 741840885}
-  - 114: {fileID: 741840886}
   - 114: {fileID: 741840887}
   m_Layer: 0
   m_Name: MainCamera
@@ -460,36 +459,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   downsample: 1
-  blurSize: 3
+  blurSize: 2.92000008
   blurIterations: 1
   blurType: 0
   blurShader: {fileID: 4800000, guid: f9d5fa183cd6b45eeb1491f74863cd91, type: 3}
---- !u!114 &741840886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 741840879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646b5bc27a658f447b1d929fd5ffbd70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mode: 1
-  showGeneratedNormals: 0
-  offsetScale: .200000003
-  blurRadius: 18
-  edgeThresholdMin: .0500000007
-  edgeThreshold: .200000003
-  edgeSharpness: 4
-  dlaaSharp: 0
-  ssaaShader: {fileID: 4800000, guid: b3728d1488b02490cbd196c7941bf1f8, type: 3}
-  dlaaShader: {fileID: 4800000, guid: 017ca72b9e8a749058d13ebd527e98fa, type: 3}
-  nfaaShader: {fileID: 4800000, guid: ce0cb2621f6d84e21a87414e471a3cce, type: 3}
-  shaderFXAAPreset2: {fileID: 4800000, guid: 6f1418cffd12146f2a83be795f6fa5a7, type: 3}
-  shaderFXAAPreset3: {fileID: 4800000, guid: c182fa94a5a0a4c02870641efcd38cd5, type: 3}
-  shaderFXAAII: {fileID: 4800000, guid: cd5b323dcc592457790ff18b528f5e67, type: 3}
-  shaderFXAAIII: {fileID: 4800000, guid: c547503fff0e8482ea5793727057041c, type: 3}
 --- !u!114 &741840887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,11 +474,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42794c2be7b1ebe4aa447afa08d5f76b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  water: {fileID: 2800000, guid: a743ba68574c2894aa459016bc121914, type: 3}
-  sand: {fileID: 2800000, guid: ee042b3c2f2eae542ab133f525d285cb, type: 3}
-  grass: {fileID: 2800000, guid: 699b9ab01019dc448bee4e472973ea7b, type: 3}
-  rock: {fileID: 2800000, guid: 553bc88ffe6b33246a2ad52171cd6fd8, type: 3}
-  ice: {fileID: 2800000, guid: 0c2a7d5c6f1d7a546bdd7b617211cd46, type: 3}
+  water: {fileID: 2800000, guid: 5168aa5f58284bc4288e24e94d34cad5, type: 3}
+  sand: {fileID: 2800000, guid: 5375dcbdc0469ae47930e3dad6e95c92, type: 3}
+  grass: {fileID: 2800000, guid: c83f31af276c7d749807484e021053e6, type: 3}
+  rock: {fileID: 2800000, guid: 90de1ae7e979a30499f06dddb1dad8fb, type: 3}
+  ice: {fileID: 2800000, guid: 7b7d71c8babbec54ea512647c7db5970, type: 3}
   heightmap: {fileID: 8400000, guid: ebb8b1fcd2046d04fb9e4ef2113e0e24, type: 2}
   addTextureShader: {fileID: 4800000, guid: 5fb27df2d2cb66948a70f3f0e9acfc1b, type: 3}
   x: 0
@@ -536,7 +509,7 @@ Light:
   serializedVersion: 6
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 8
+  m_Intensity: .680000007
   m_Range: 10000
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -554,7 +527,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_Lightmapping: 4
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_AreaSize: {x: 1, y: 1}
@@ -565,7 +538,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 886613004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10468, y: 0, z: -5.23000002}
+  m_LocalPosition: {x: -10050, y: 0, z: -5.23000002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
