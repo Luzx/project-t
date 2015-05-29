@@ -483,6 +483,7 @@ MonoBehaviour:
   addTextureShader: {fileID: 4800000, guid: 5fb27df2d2cb66948a70f3f0e9acfc1b, type: 3}
   x: 0
   y: 0
+  brightness: 2
 --- !u!1 &886613004
 GameObject:
   m_ObjectHideFlags: 0

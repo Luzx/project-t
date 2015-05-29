@@ -22,6 +22,8 @@ public class AddTextures : MonoBehaviour {
 
 	public float x, y;
 
+	public float brightness = 2;
+
 	//TODO: pull from TerrainColor.cs
 	/*public float waterThreshold;
 	public float sandThreshold;
@@ -53,6 +55,7 @@ public class AddTextures : MonoBehaviour {
 		mat.SetFloat ("_LevelWidth", 1.0f / 5.0f);
 
 		mat.SetFloat ("_AspectRatio", (float)Screen.width / (float)Screen.height);
+		mat.SetFloat ("_Brightness", brightness);
 		Debug.Log ((float)Screen.width / (float)Screen.height);
 
 		/*mat.SetFloat("_waterThreshold", waterThreshold);

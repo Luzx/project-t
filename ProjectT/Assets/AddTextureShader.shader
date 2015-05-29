@@ -18,7 +18,8 @@
 
 		sampler2D _MainTex;
 		uniform sampler2D _WaterTex, _SandTex, _GrassTex, _RockTex, _IceTex;
-		uniform float _LevelWidth, _TexWidth, _TexHeight, _AspectRatio;
+		uniform float _LevelWidth, _TexWidth, _TexHeight, _AspectRatio, _Brightness;
+		
 		//uniform float _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold;
 
 		struct Input {
@@ -76,16 +77,27 @@
 			//o.Albedo = float3(1, 1, 1) * c.r;
 			//o.Albedo.r = c.r;
 			//o.Albedo.r = c.r;
-			float2 tileReductionSamplePos = float2(1, 1) - fmod((IN.uv_MainTex * float2(_AspectRatio, 1)) * 4, 1);
+			//float2 tileReductionSamplePos = fmod((IN.uv_MainTex * float2(_AspectRatio, 1)) * float2(-9, 9), 1);
 			IN.uv_MainTex = fmod((IN.uv_MainTex * float2(_AspectRatio, 1)) * 5, 1);
-			//float2 tileReductionSamplePos = fmod((IN.uv_MainTex * float2(_AspectRatio, 1)), 1);
 			
-			//TODO: Optimize
-			o.Albedo = (tex2D (_WaterTex, IN.uv_MainTex).rgb + tex2D (_WaterTex, tileReductionSamplePos).rgb) * getTexAlpha(0, c.g)  * c.r;
-			o.Albedo += (tex2D (_SandTex, IN.uv_MainTex).rgb + tex2D (_SandTex, tileReductionSamplePos).rgb) * getTexAlpha(_LevelWidth, c.g) * c.r;
-			o.Albedo += (tex2D (_GrassTex, IN.uv_MainTex).rgb + tex2D (_GrassTex, tileReductionSamplePos).rgb) * getTexAlpha(2 * _LevelWidth, c.g) * c.r;
-			o.Albedo += (tex2D (_RockTex, IN.uv_MainTex).rgb + tex2D (_RockTex, tileReductionSamplePos).rgb) * getTexAlpha(3 * _LevelWidth, c.g) * c.r;
-			o.Albedo += (tex2D (_IceTex, IN.uv_MainTex).rgb + tex2D (_IceTex, tileReductionSamplePos).rgb) * getTexAlpha(4 * _LevelWidth, c.g) * c.r;
+			
+			
+			float alpha;
+			alpha = getTexAlpha(0, c.g);
+			if (alpha > 0) o.Albedo += tex2D (_WaterTex, IN.uv_MainTex).rgb * alpha * c.r * _Brightness;
+			
+			
+			alpha = getTexAlpha(_LevelWidth, c.g);
+			if (alpha > 0) o.Albedo += (tex2D (_SandTex, IN.uv_MainTex).rgb) * alpha * c.r * _Brightness;
+			
+			alpha = getTexAlpha(2 * _LevelWidth, c.g);
+			if (alpha > 0) o.Albedo += (tex2D (_GrassTex, IN.uv_MainTex).rgb) * alpha * c.r * _Brightness;
+			
+			alpha = getTexAlpha(3 * _LevelWidth, c.g);
+			if (alpha > 0) o.Albedo += (tex2D (_RockTex, IN.uv_MainTex).rgb) * alpha * c.r * _Brightness;
+			
+			alpha = getTexAlpha(4 * _LevelWidth, c.g);
+			if (alpha > 0) o.Albedo += tex2D (_IceTex, IN.uv_MainTex).rgb * alpha * c.r * _Brightness;
 			
 			
 			o.Smoothness = min(1, getTexAlpha(0, c.g) + getTexAlpha(4 * _LevelWidth, c.g));//Make it shiny if it's water or snow
