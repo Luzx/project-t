@@ -99,16 +99,20 @@ Material:
         second: 0
       data:
         first:
+          name: _Glossiness
+        second: 0
+      data:
+        first:
+          name: _Metallic
+        second: 0
+      data:
+        first:
           name: _Parallax
-        second: .00499999989
+        second: .200000003
       data:
         first:
           name: _ZWrite
         second: 1
-      data:
-        first:
-          name: _Glossiness
-        second: 0
       data:
         first:
           name: _BumpScale
@@ -132,10 +136,6 @@ Material:
       data:
         first:
           name: _Mode
-        second: 0
-      data:
-        first:
-          name: _Metallic
         second: 0
       data:
         first:
@@ -164,12 +164,12 @@ Material:
         second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
-          name: _GroundColor
-        second: {r: .368999988, g: .349000007, b: .340999991, a: 1}
-      data:
-        first:
           name: _EmissionColorUI
         second: {r: 1, g: 1, b: 1, a: 1}
+      data:
+        first:
+          name: _GroundColor
+        second: {r: .368999988, g: .349000007, b: .340999991, a: 1}
       data:
         first:
           name: _SkyTint
