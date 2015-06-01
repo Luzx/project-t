@@ -13,7 +13,7 @@
 		
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Standard 
+		#pragma surface surf Standard keepalpha 
 		//fullforwardshadows
 
 		// Use shader model 3.0 target, to get nicer looking lighting
@@ -21,7 +21,7 @@
 
 		sampler2D _MainTex;
 		sampler2D _BumpMap;
-		uniform float _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _mapCoefficient, _heightVariance, _mountainHeight;
+		uniform float _waterThreshold, _sandThreshold, _grassThreshold, _rockThreshold, _perlinShadowBias, _elevation, _mapCoefficient, _heightVariance, _mountainHeight, _LevelWidth;
 		uniform fixed3 _waterColor, _sandColor, _grassColor, _rockColor, _iceColor;
 
 		float _Parallax;
@@ -93,10 +93,6 @@
 			return height;
 		}
 		
-		void setTerrainColors(float height, inout SurfaceOutputStandard o)
-		{
-			
-		}
 		
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
@@ -123,34 +119,71 @@
 			if (height < _waterThreshold) 
 			{
 				if (height < 0) height = 0;
-				o.Albedo = (height - _waterThreshold) + _perlinShadowBias * _waterColor;
+				o.Albedo.r = (height - _waterThreshold) + _perlinShadowBias;
 				o.Normal = o.Normal * height + float3(0, 0, 1) * (1 - height);
+				o.Emission.g = 0;
+
 			}
 
 			else if (height * _heightVariance < _sandThreshold) 
-				o.Albedo = ((height - _sandThreshold) / 30) + _perlinShadowBias * _sandColor;
+			{
+				o.Albedo.r = ((height - _sandThreshold) / 30) + _perlinShadowBias;
+				o.Emission.g = _LevelWidth;	
+
+				o.Normal.z *= 2;
+			}
 
 					
 			else if (height * _heightVariance < _grassThreshold) 
-				o.Albedo = (height - _grassThreshold) + _perlinShadowBias * _grassColor;
+			{
+				o.Albedo.r = (height - _grassThreshold) + _perlinShadowBias;
+				
+				if (slope < 0.2)
+				{
+					o.Emission.g = 3 * _LevelWidth;
+					o.Normal.z *= 0.3;
+				}	
+				else
+				{
+					o.Emission.g = 2 * _LevelWidth;
+					o.Normal.z *= 3;
+				}
+				//o.Emission.g = 2 * _LevelWidth;
+
+			}
 	
 					
 			else if (height * _heightVariance < _rockThreshold) 
 			{
-				if (slope > 0.8 || height * _heightVariance < _grassThreshold + 0.2) o.Albedo = (height - _grassThreshold) + _perlinShadowBias * _grassColor;
-				else o.Albedo = (height - _rockThreshold) + _perlinShadowBias * _rockColor;
+				if (slope > 0.8 || height * _heightVariance < _grassThreshold + 0.2) o.Albedo.r = (height - _grassThreshold) + _perlinShadowBias;
+				else o.Albedo.r = (height - _rockThreshold) + _perlinShadowBias;
+				
+				o.Emission.g = 3 * _LevelWidth;
+
+				o.Normal.z *= 0.3;
 			}
 
 
-			else o.Albedo = slope * _perlinShadowBias * _iceColor + 0.7;
+			else 
+			{
+				o.Albedo.r = slope * _perlinShadowBias + 0.9;
+				o.Emission.g = 4 * _LevelWidth;
+				
+				//o.Normal.z *= 1;
+				
+			}
 			
 			
 			
+			o.Emission.b = mapPixel.b;
+				
+			//o.Albedo = float3(mapPixel.a, mapPixel.a, mapPixel.a);
+
 			//Other parameters
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
-			o.Alpha = 1;//c.a;
-			
+			o.Alpha = mapPixel.a;
+			//o.Emission = float3(0, o.Albedo.g, o.Albedo.b);
 			
 			
 			
