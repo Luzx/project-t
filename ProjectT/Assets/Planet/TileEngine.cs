@@ -45,6 +45,11 @@ public class TileEngine : MonoBehaviour {
 		material.SetTexture("_PermTable1D", m_perlin.GetPermutationTable1D());
 		material.SetTexture("_Gradient2D", m_perlin.GetGradient2D());
 
+		material.SetFloat ("_left", 0);
+		material.SetFloat ("_top", 0);
+		material.SetFloat ("_right", 0.25f);
+		material.SetFloat ("_bottom", 0.75f);
+
 		nirvanaTexture = new RenderTexture (size, size, 24, RenderTextureFormat.ARGB32);
 		material.mainTexture = nirvanaTexture;
 

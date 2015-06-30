@@ -75,18 +75,22 @@ public class PlanetCamera : MonoBehaviour {
 		
 		//Polar movement
 		if(Input.GetKey("w")) {
-			movement += transform.forward * MoveSpeed;
+			float cosA = Mathf.Cos(-transform.eulerAngles.z);
+			float sinA = Mathf.Sin(-transform.eulerAngles.z);
+			movement = new Vector3(cosA - sinA, 0, 0) * MoveSpeed;
 		}
 		if(Input.GetKey("s")) {
 			movement -= transform.forward * MoveSpeed;
 		}
 		if(Input.GetKey("a")) {
-			//Direction += 0.2f * MoveSpeed;
+			//direction += 0.2f * MoveSpeed;
 			rotateCamera(4.0f * MoveSpeed);
+			//transform.eulerAngles = new Vector3(0, 0, direction);
 		}
 		if(Input.GetKey("d")) {
-			//Direction -= 0.2f * MoveSpeed;
+			//direction -= 0.2f * MoveSpeed;
 			rotateCamera(-4.0f * MoveSpeed);
+			//transform.eulerAngles = new Vector3(0, 0, direction);
 		}
 		
 		// android

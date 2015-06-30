@@ -12,6 +12,8 @@
 
 			uniform sampler2D _PermTable1D, _Gradient2D;
 			uniform float _Frequency, _Lacunarity, _Gain, _x, _y, _scale;
+			uniform float _left, _right, _top, _bottom, _dx, _dy;//All defined relative to (0, 0). (0, 0) is the upper left corner of the texture, and (1, 1) is the lower right.
+			uniform sampler2D _previousFrame;
 			
 			
 			struct v2f {
@@ -109,7 +111,10 @@
 			}
 
 			fixed4 frag (v2f i) : SV_Target {
-				
+				if (i.uv.x < _left || i.uv.x > _right || i.uv.y < _top || i.uv.y > _bottom)
+				{
+					return tex2D(_previousFrame, i.uv.xy + float2(_dx, _dy));
+				}
 				i.uv.xy *= _scale;
 				
 				i.uv.xy += float2(_x, _y);
